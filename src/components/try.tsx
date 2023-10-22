@@ -2,7 +2,7 @@
 import React, { Suspense } from "react";
 import { Canvas, useLoader } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 const Model = () => {
   const gltf = useLoader(GLTFLoader, "./desktop_pc/scene.gltf");
