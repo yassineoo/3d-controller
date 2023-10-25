@@ -1,0 +1,90 @@
+"use client";
+import { Environment, OrbitControls } from "@react-three/drei";
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+import { Suspense, useState, useRef, useEffect } from "react";
+
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import * as THREE from "three";
+import QRCode from "qrcode";
+import Peer from "peerjs";
+
+export default function IndexPage() {
+  const [peer, setPeer] = useState<Peer | null>(null);
+  const [qrcode, setQrcode] = useState("");
+  const [rotationDeg, setRotationDeg] = useState([0, 0, 0]);
+  // Function to send a "hello world" message
+
+  // Function to receive a "hi" message
+  const receiveHiMessage = (data: unknown) => {
+    console.log(data);
+    const receivedRotationValues = data as { x: number; y: number; z: number };
+    setRotationDeg([
+      receivedRotationValues.x,
+      receivedRotationValues.y,
+      receivedRotationValues.z,
+    ]);
+    console.log("Received a 'hi' message!");
+  };
+  useEffect(() => {
+    const peer = new Peer();
+    console.log(peer);
+
+    peer.on("open", () => {
+      console.log("Peer ID:", peer.id);
+      QRCode.toDataURL(peer.id)
+        .then((url) => {
+          setQrcode(url);
+          setPeer(peer);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    });
+
+    peer.on("connection", (connection) => {
+      // handle connection
+      console.log("connection");
+      console.log(connection);
+
+      // Listen for messages from the other peer
+      connection.on("data", receiveHiMessage);
+    });
+  }, []);
+
+  return (
+    <div className="h-screen flex flex-col">
+      <h1>Connect with WebRTC and QR Code</h1>
+      <img className="h-24 w-24" src={qrcode} alt="QR code" />
+
+      <Canvas
+        className="flex-1 h-full"
+        shadows
+        dpr={[1, 2]}
+        camera={{ position: [0, 0, 10], fov: 50 }}
+      >
+        <OrbitControls enableRotate={true} />
+        <Suspense fallback={null}>
+          <Model rotation={rotationDeg} />
+          <Environment preset="city" />
+        </Suspense>
+      </Canvas>
+    </div>
+  );
+}
+
+type ModelProps = {
+  rotation: number[];
+};
+
+const Model = ({ rotation }: ModelProps) => {
+  const gltf = useLoader(GLTFLoader, "./planet/scene.gltf");
+
+  // Track the previous rotation to detect changes
+  const prevRotation = useRef([0, 0, 0]);
+
+  useFrame(({ camera, scene }) => {
+    camera.rotation.set(rotation[0], rotation[1], rotation[2]);
+  });
+
+  return <primitive object={gltf.scene} />;
+};

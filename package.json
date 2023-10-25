@@ -12,6 +12,9 @@
     "@react-three/drei": "^9.88.4",
     "@react-three/fiber": "^8.15.2",
     "next": "13.5.6",
+    "peerjs": "^1.5.1",
+    "qrcode": "^1.5.3",
+    "qrcode-reader": "^1.0.4",
     "react": "^18",
     "react-dom": "^18",
     "three": "^0.157.0",
@@ -19,6 +22,7 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/qrcode": "^1.5.4",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/three": "^0.157.2",
