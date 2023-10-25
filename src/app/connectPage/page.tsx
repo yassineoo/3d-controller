@@ -16,7 +16,7 @@ export default function IndexPage() {
 
   // Function to receive a "hi" message
   const receiveHiMessage = (data: unknown) => {
-    console.log(data);
+    // console.log(data);
     const receivedRotationValues = data as { x: number; y: number; z: number };
     setRotationDeg([
       receivedRotationValues.x,
@@ -62,7 +62,6 @@ export default function IndexPage() {
         dpr={[1, 2]}
         camera={{ position: [0, 0, 10], fov: 50 }}
       >
-        <OrbitControls enableRotate={true} />
         <Suspense fallback={null}>
           <Model rotation={rotationDeg} />
           <Environment preset="city" />
@@ -83,7 +82,44 @@ const Model = ({ rotation }: ModelProps) => {
   const prevRotation = useRef([0, 0, 0]);
 
   useFrame(({ camera, scene }) => {
-    camera.rotation.set(rotation[0], rotation[1], rotation[2]);
+    // camera.rotation.set(rotation[0], rotation[1], rotation[2]);
+    scene.rotation.set(-rotation[0], -rotation[1], -rotation[1]);
+    const currentRotation = {
+      x: camera.rotation.x,
+      y: camera.rotation.y,
+      z: camera.rotation.z,
+    };
+
+    const roundedCurrentRotation = {
+      x: Number(currentRotation.x.toFixed(2)),
+      y: Number(currentRotation.y.toFixed(2)),
+      z: Number(currentRotation.z.toFixed(2)),
+    };
+
+    // Check if the rotation has changed since the last frame
+    if (
+      roundedCurrentRotation.x !== Number(prevRotation.current[0].toFixed(2)) ||
+      roundedCurrentRotation.y !== Number(prevRotation.current[1].toFixed(2)) ||
+      roundedCurrentRotation.z !== Number(prevRotation.current[2].toFixed(2))
+    ) {
+      // Log the new rotation values
+      console.log(
+        "Rotation (degrees):",
+        rotation[0],
+        rotation[1],
+        rotation[2],
+        roundedCurrentRotation
+      );
+
+      // Update the previous rotation
+      prevRotation.current = [
+        currentRotation.x,
+        currentRotation.y,
+        currentRotation.z,
+      ];
+
+      // Send the rotation values to the other peer
+    }
   });
 
   return <primitive object={gltf.scene} />;
