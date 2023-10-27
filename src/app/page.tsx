@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
+  const isClient = useClient();
 
   return (
     <div className="bg-white">
@@ -20,14 +21,22 @@ export default function Home() {
           <button
             type="button"
             className=" h-16 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={() => router.push("/connect")}
+            onClick={() => {
+              if (isClient) {
+                router.push("/connect");
+              }
+            }}
           >
             desktop pc 3D-Model
           </button>
           <button
             type="button"
             className="h-16 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-            onClick={() => router.push("/controller")}
+            onClick={() => {
+              if (isClient) {
+                router.push("/conntroller");
+              }
+            }}
           >
             planet 3D-Model
           </button>
