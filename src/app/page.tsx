@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
-  const isClient = useClient();
+  const isClient = typeof window !== "undefined";
 
   return (
     <div className="bg-white">
@@ -34,7 +34,7 @@ export default function Home() {
             className="h-16 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
             onClick={() => {
               if (isClient) {
-                router.push("/conntroller");
+                router.push("/controller");
               }
             }}
           >
