@@ -20,14 +20,14 @@ export default function Home() {
           <button
             type="button"
             className=" h-16 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={() => router.push("/desktop")}
+            onClick={() => router.push("/connect")}
           >
             desktop pc 3D-Model
           </button>
           <button
             type="button"
             className="h-16 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-            onClick={() => router.push("/planet")}
+            onClick={() => router.push("/controller")}
           >
             planet 3D-Model
           </button>
