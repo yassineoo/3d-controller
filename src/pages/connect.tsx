@@ -1,4 +1,3 @@
-"use client";
 import { Environment, OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { Suspense, useState, useRef, useEffect } from "react";
