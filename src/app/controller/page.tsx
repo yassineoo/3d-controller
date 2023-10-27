@@ -1,6 +1,6 @@
 "use client";
-import Peer from "peerjs";
-import QRCodeReader from "qrcode-reader";
+import * as Peer from "peerjs";
+import * as qrcodeReader from "qrcode-reader";
 
 import { Environment, OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
@@ -10,7 +10,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
 
 export default function ConnectPage() {
-  const [peer, setPeer] = useState<Peer | null>(null);
+  const [peer, setPeer] = useState<Peer.Peer | null>(null);
   const [peerId, setPeerId] = useState("");
   const [connection, setConnection] = useState<Peer.DataConnection | null>(
     null
@@ -21,7 +21,7 @@ export default function ConnectPage() {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0];
-    const reader = new QRCodeReader();
+    const reader = new qrcodeReader();
 
     try {
       if (file && file.type.startsWith("image/")) {
@@ -78,7 +78,7 @@ export default function ConnectPage() {
     });
   };
   useEffect(() => {
-    const peer = new Peer();
+    const peer = new Peer.Peer();
 
     setPeer(peer);
 
