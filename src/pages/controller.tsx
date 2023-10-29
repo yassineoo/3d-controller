@@ -77,9 +77,25 @@ export default function ConnectPage() {
   };
   useEffect(() => {
     const Peer = require("peerjs").default;
-    const peer = new Peer.Peer();
+    const peer = new Peer();
 
     setPeer(peer);
+
+    // Get the current URL
+    const url = new URL(window.location.href);
+
+    // Check if the URL contains the ID as a query parameter
+    const hasIdQueryParameter = url.searchParams.has("id");
+
+    // If the URL contains the ID as a query parameter, connect directly to the peer
+    if (hasIdQueryParameter) {
+      const peerIdFromUrl = url.searchParams.get("id");
+
+      if (peerIdFromUrl) {
+        setPeerId(peerIdFromUrl);
+        connectToPeer();
+      }
+    }
 
     return () => {
       // Clean up resources when the component unmounts
