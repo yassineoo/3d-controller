@@ -5,7 +5,7 @@ import { Suspense, useState, useRef, useEffect } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
 import QRCode from "qrcode";
-import Peer from "peerjs";
+//import Peer from "peerjs";
 
 export default function IndexPage() {
   //const [peer, setPeer] = useState<Peer | null>(null);
@@ -25,6 +25,7 @@ export default function IndexPage() {
     console.log("Received a 'hi' message!");
   };
   useEffect(() => {
+    const Peer = require("peerjs").default;
     const peer = new Peer();
     console.log(peer);
 
@@ -42,7 +43,7 @@ export default function IndexPage() {
         });
     });
 
-    peer.on("connection", (connection) => {
+    peer.on("connection", (connection: any) => {
       // handle connection
       console.log("connection");
       console.log(connection);
