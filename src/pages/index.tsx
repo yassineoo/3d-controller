@@ -34,7 +34,7 @@ export default function Home() {
             className="h-16 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
             onClick={() => {
               if (isClient) {
-                router.push("/controller");
+                //  router.push("/controller");
               }
             }}
           >

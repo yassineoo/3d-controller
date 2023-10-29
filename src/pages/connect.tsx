@@ -8,7 +8,7 @@ import QRCode from "qrcode";
 import Peer from "peerjs";
 
 export default function IndexPage() {
-  const [peer, setPeer] = useState<Peer | null>(null);
+  //const [peer, setPeer] = useState<Peer | null>(null);
   const [qrcode, setQrcode] = useState("");
   const [rotationDeg, setRotationDeg] = useState([0, 0, 0]);
   // Function to send a "hello world" message
@@ -35,7 +35,7 @@ export default function IndexPage() {
       )
         .then((url) => {
           setQrcode(url);
-          setPeer(peer);
+          // setPeer(peer);
         })
         .catch((err) => {
           console.error(err);
