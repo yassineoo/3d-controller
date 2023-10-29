@@ -30,7 +30,9 @@ export default function IndexPage() {
 
     peer.on("open", () => {
       console.log("Peer ID:", peer.id);
-      QRCode.toDataURL(peer.id)
+      QRCode.toDataURL(
+        `https://3d-controller-3jwh15slt-yassineoo.vercel.app/controller?id=${peer.id}}`
+      )
         .then((url) => {
           setQrcode(url);
           setPeer(peer);
