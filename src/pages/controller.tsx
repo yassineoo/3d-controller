@@ -10,11 +10,9 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
 
 export default function ConnectPage() {
-  const [peer, setPeer] = useState<Peer.Peer | null>(null);
+  const [peer, setPeer] = useState<any>();
   const [peerId, setPeerId] = useState("");
-  const [connection, setConnection] = useState<Peer.DataConnection | null>(
-    null
-  );
+  const [connection, setConnection] = useState<any>();
   const qrCodeRef = useRef(null);
 
   const handleImageUpload = async (
@@ -119,7 +117,7 @@ export default function ConnectPage() {
 
 type ModelProps = {
   rotation: [number, number, number];
-  connection: Peer.DataConnection | null;
+  connection: any;
 };
 
 const Model = ({ rotation, connection }: ModelProps) => {
