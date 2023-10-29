@@ -1,5 +1,5 @@
 "use client";
-import * as Peer from "peerjs";
+//import * as Peer from "peerjs";
 import * as qrcodeReader from "qrcode-reader";
 
 import { Environment, OrbitControls } from "@react-three/drei";
@@ -76,6 +76,7 @@ export default function ConnectPage() {
     });
   };
   useEffect(() => {
+    const Peer = require("peerjs").default;
     const peer = new Peer.Peer();
 
     setPeer(peer);
