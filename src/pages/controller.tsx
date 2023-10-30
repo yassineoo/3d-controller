@@ -83,9 +83,11 @@ export default function ConnectPage() {
 
     // Get the current URL
     const url = new URL(window.location.href);
+    console.log("url is ", url);
 
     // Check if the URL contains the ID as a query parameter
     const hasIdQueryParameter = url.searchParams.has("id");
+    console.log("id is ", url);
 
     // If the URL contains the ID as a query parameter, connect directly to the peer
     if (hasIdQueryParameter) {
@@ -106,15 +108,18 @@ export default function ConnectPage() {
   return (
     <div className="h-screen flex flex-col">
       <h1>Connect with WebRTC by Scanning a QR Code</h1>
-      <input type="file" accept="image/*" onChange={handleImageUpload} />
-      <div ref={qrCodeRef}></div> {/* Add a div to display the QR code */}
+
       {connection ? (
         <div>
           <p>Connected to peer: {peerId}</p>
           {/* Add your communication logic here */}
         </div>
       ) : (
-        <button onClick={connectToPeer}>Connect to Peer</button>
+        <div>
+          <input type="file" accept="image/*" onChange={handleImageUpload} />
+          <div ref={qrCodeRef}></div> {/* Add a div to display the QR code */}
+          <button onClick={connectToPeer}>Connect to Peer</button>
+        </div>
       )}
       <Canvas
         className="flex-1 h-full"
