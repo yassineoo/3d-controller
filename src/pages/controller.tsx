@@ -59,16 +59,20 @@ export default function ConnectPage() {
     }
   };
 
-  const connectToPeer = () => {
+  const connectToPeer = (id: string = "") => {
+    console.log(`connecting ................`);
+    console.log(`peer`);
+
     console.log(peer);
     console.log(peerId);
+    console.log(`peerId`);
 
-    if (!peer || !peerId) {
+    if (!peer || (!peerId && !id)) {
       console.log("Peer or peerId is missing");
       return;
     }
 
-    const newConnection = peer.connect(peerId);
+    const newConnection = peer.connect(id ? id : peerId);
     newConnection.on("open", () => {
       // Connection established, you can use `newConnection` for data transfer
       setConnection(newConnection);
@@ -80,6 +84,7 @@ export default function ConnectPage() {
     const peer = new Peer();
 
     setPeer(peer);
+    console.log(peer);
 
     // Get the current URL
     const url = new URL(window.location.href);
@@ -94,11 +99,14 @@ export default function ConnectPage() {
     if (hasIdQueryParameter) {
       const peerIdFromUrl = url.searchParams.get("id");
 
-      console.log("Real id is ", hasIdQueryParameter);
+      console.log("Real id is ", peerIdFromUrl);
 
       if (peerIdFromUrl) {
         setPeerId(peerIdFromUrl);
-        connectToPeer();
+        console.log("i have put this as input ", peerIdFromUrl);
+        console.log("after setup the peer id in the state : ", peerId);
+
+        //  connectToPeer(peerIdFromUrl);
       }
     }
 
@@ -121,7 +129,13 @@ export default function ConnectPage() {
         <div>
           <input type="file" accept="image/*" onChange={handleImageUpload} />
           <div ref={qrCodeRef}></div> {/* Add a div to display the QR code */}
-          <button onClick={connectToPeer}>Connect to Peer</button>
+          <button
+            onClick={() => {
+              connectToPeer();
+            }}
+          >
+            Connect to Peer
+          </button>
         </div>
       )}
       <Canvas
