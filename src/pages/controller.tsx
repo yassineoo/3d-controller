@@ -94,6 +94,8 @@ export default function ConnectPage() {
     if (hasIdQueryParameter) {
       const peerIdFromUrl = url.searchParams.get("id");
 
+      console.log("Real id is ", hasIdQueryParameter);
+
       if (peerIdFromUrl) {
         setPeerId(peerIdFromUrl);
         connectToPeer();
