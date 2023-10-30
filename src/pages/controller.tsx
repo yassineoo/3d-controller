@@ -84,10 +84,11 @@ export default function ConnectPage() {
     // Get the current URL
     const url = new URL(window.location.href);
     console.log("url is ", url);
+    console.log("url is ", url.href);
 
     // Check if the URL contains the ID as a query parameter
     const hasIdQueryParameter = url.searchParams.has("id");
-    console.log("id is ", url);
+    console.log("id is ", hasIdQueryParameter);
 
     // If the URL contains the ID as a query parameter, connect directly to the peer
     if (hasIdQueryParameter) {
