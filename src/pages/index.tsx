@@ -1,7 +1,5 @@
 "use client";
-import Home3D from "@/components/try";
 import Head from "next/head";
-import Image from "next/image";
 import { useRouter } from "next/router";
 
 export default function Home() {
@@ -34,7 +32,7 @@ export default function Home() {
             className="h-16 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
             onClick={() => {
               if (isClient) {
-                //  router.push("/controller");
+                router.push("/controller");
               }
             }}
           >
