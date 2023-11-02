@@ -2,9 +2,34 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-export default function Home() {
+
+type Content = {
+  title: string;
+  query: string
+};
+
+
+
+function ConnectButton({title,query}:Content){
   const router = useRouter();
-  const isClient = typeof window !== "undefined";
+  return(
+    <button
+              type="button"
+              className="w-25 h-10 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded"
+              onClick={() => {
+                router.push({
+                  pathname:'/connect',
+                  query:{component:query}
+                });
+              }}>
+        {title}
+    </button>
+  );
+}
+
+
+export default function Home() {
+  
 
   return (
     <div className="bg-white">
@@ -16,28 +41,10 @@ export default function Home() {
       </header>
       <main className="bg-red flex flex-col">
         <div className="flex flex-row justify-around h-96 items-center">
-          <button
-            type="button"
-            className=" h-16 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={() => {
-              if (isClient) {
-                router.push("/connect");
-              }
-            }}
-          >
-            desktop pc 3D-Model
-          </button>
-          <button
-            type="button"
-            className="h-16 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-            onClick={() => {
-              if (isClient) {
-                router.push("/controller");
-              }
-            }}
-          >
-            planet 3D-Model
-          </button>
+         
+          <ConnectButton title="Desktop" query="desktop" />
+          <ConnectButton title="planet" query="planet" />
+          
         </div>
       </main>
     </div>
