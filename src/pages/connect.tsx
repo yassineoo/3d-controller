@@ -85,7 +85,7 @@ const Model = ({ rotation }: ModelProps) => {
 
   useFrame(({ camera, scene }) => {
     // camera.rotation.set(rotation[0], rotation[1], rotation[2]);
-    scene.rotation.set(-rotation[0], -rotation[1], -rotation[1]);
+    scene.rotation.set(-rotation[0], -rotation[1], -rotation[2]);
     const currentRotation = {
       x: camera.rotation.x,
       y: camera.rotation.y,

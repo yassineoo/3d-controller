@@ -18,14 +18,14 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: white;
+  background: black;
   height: 100vh;
 }
 
-button{
+button {
   padding: 10px;
   width: 250px;
-  height: 20px
+  height: 20px;
 }
 
 canvas {
