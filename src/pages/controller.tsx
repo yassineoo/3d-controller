@@ -76,7 +76,7 @@ export default function ConnectPage() {
     newConnection.on("open", () => {
       // Connection established, you can use `newConnection` for data transfer
       setConnection(newConnection);
-      newConnection?.send("hi");
+      // newConnection?.send("hi");
     });
   };
   useEffect(() => {

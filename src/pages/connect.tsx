@@ -22,6 +22,11 @@ export default function IndexPage() {
       zoom: number;
       rotation: { x: number; y: number; z: number };
     };
+    console.log("data");
+    console.log(data);
+    console.log("receivedValues");
+    console.log(receivedValues);
+    console.log("receivedValues");
     const receivedRotationValues = receivedValues.rotation;
     setRotationDeg([
       receivedRotationValues.x,
