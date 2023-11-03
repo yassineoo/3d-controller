@@ -12,17 +12,23 @@ export default function IndexPage() {
 
   const [qrcode, setQrcode] = useState("");
   const [rotationDeg, setRotationDeg] = useState([0, 0, 0]);
+  const [zoom, setZoom] = useState(5);
   // Function to send a "hello world" message
 
   // Function to receive a "hi" message
   const receiveHiMessage = (data: unknown) => {
     // console.log(data);
-    const receivedRotationValues = data as { x: number; y: number; z: number };
+    const receivedValues = data as {
+      zoom: number;
+      rotation: { x: number; y: number; z: number };
+    };
+    const receivedRotationValues = receivedValues.rotation;
     setRotationDeg([
       receivedRotationValues.x,
       receivedRotationValues.y,
       receivedRotationValues.z,
     ]);
+    setZoom(receivedValues.zoom);
     console.log("Received a 'hi' message!");
   };
   useEffect(() => {
@@ -57,13 +63,13 @@ export default function IndexPage() {
   return (
     <div className="h-screen flex flex-col">
       <h1>Connect with WebRTC and QR Code</h1>
-      <img className="h-24 w-24" src={qrcode} alt="QR code" />
+      <img className="h-40 w-40" src={qrcode} alt="QR code" />
 
       <Canvas
         className="flex-1 h-full"
         shadows
         dpr={[1, 2]}
-        camera={{ position: [0, 0, 10], fov: 50 }}
+        camera={{ position: [0, 0, zoom], fov: 50 }}
       >
         <Suspense fallback={null}>
           <Model rotation={rotationDeg} />

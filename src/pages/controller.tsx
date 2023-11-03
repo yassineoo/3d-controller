@@ -142,7 +142,7 @@ export default function ConnectPage() {
         className="flex-1 h-full"
         shadows
         dpr={[1, 2]}
-        camera={{ position: [0, 0, 10], fov: 50 }}
+        camera={{ position: [0, 0, 5], fov: 50 }}
       >
         <OrbitControls enableRotate={true} />
         <Suspense fallback={null}>
@@ -164,6 +164,7 @@ const Model = ({ rotation, connection }: ModelProps) => {
 
   // Track the previous rotation to detect changes
   const prevRotation = useRef([0, 0, 0]);
+  const [prevZoom, setPrevZoom] = useState(5);
 
   useFrame(({ camera, scene }) => {
     // Extract the rotation in degrees
@@ -179,11 +180,14 @@ const Model = ({ rotation, connection }: ModelProps) => {
       z: Number(currentRotation.z.toFixed(2)),
     };
 
+    const currentZoom = camera.position.z; // Get the zoom value
+
     // Check if the rotation has changed since the last frame
     if (
       roundedCurrentRotation.x !== Number(prevRotation.current[0].toFixed(2)) ||
       roundedCurrentRotation.y !== Number(prevRotation.current[1].toFixed(2)) ||
-      roundedCurrentRotation.z !== Number(prevRotation.current[2].toFixed(2))
+      roundedCurrentRotation.z !== Number(prevRotation.current[2].toFixed(2)) ||
+      currentZoom !== prevZoom
     ) {
       // Log the new rotation values
       console.log("Rotation (degrees):", roundedCurrentRotation);
@@ -196,7 +200,11 @@ const Model = ({ rotation, connection }: ModelProps) => {
       ];
 
       // Send the rotation values to the other peer
-      connection?.send(roundedCurrentRotation);
+      //connection?.send(roundedCurrentRotation);
+      connection?.send({
+        rotation: roundedCurrentRotation,
+        zoom: currentZoom,
+      });
     }
   });
 
