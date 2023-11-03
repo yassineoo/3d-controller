@@ -9,6 +9,7 @@ import QRCode from "qrcode";
 
 export default function IndexPage() {
   //const [peer, setPeer] = useState<Peer | null>(null);
+
   const [qrcode, setQrcode] = useState("");
   const [rotationDeg, setRotationDeg] = useState([0, 0, 0]);
   // Function to send a "hello world" message
