@@ -98,42 +98,8 @@ const Model = ({ rotation }: ModelProps) => {
   useFrame(({ camera, scene }) => {
     // camera.rotation.set(rotation[0], rotation[1], rotation[2]);
     scene.rotation.set(-rotation[0], -rotation[1], -rotation[2]);
-    const currentRotation = {
-      x: camera.rotation.x,
-      y: camera.rotation.y,
-      z: camera.rotation.z,
-    };
-
-    const roundedCurrentRotation = {
-      x: Number(currentRotation.x.toFixed(2)),
-      y: Number(currentRotation.y.toFixed(2)),
-      z: Number(currentRotation.z.toFixed(2)),
-    };
-
+    camera.position.z = 10 - rotation[0];
     // Check if the rotation has changed since the last frame
-    if (
-      roundedCurrentRotation.x !== Number(prevRotation.current[0].toFixed(2)) ||
-      roundedCurrentRotation.y !== Number(prevRotation.current[1].toFixed(2)) ||
-      roundedCurrentRotation.z !== Number(prevRotation.current[2].toFixed(2))
-    ) {
-      // Log the new rotation values
-      console.log(
-        "Rotation (degrees):",
-        rotation[0],
-        rotation[1],
-        rotation[2],
-        roundedCurrentRotation
-      );
-
-      // Update the previous rotation
-      prevRotation.current = [
-        currentRotation.x,
-        currentRotation.y,
-        currentRotation.z,
-      ];
-
-      // Send the rotation values to the other peer
-    }
   });
 
   return <primitive object={gltf.scene} />;
