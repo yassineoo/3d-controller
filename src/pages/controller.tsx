@@ -164,7 +164,7 @@ const Model = ({ rotation, connection }: ModelProps) => {
 
   // Track the previous rotation to detect changes
   const prevRotation = useRef([0, 0, 0]);
-  const [prevZoom, setPrevZoom] = useState(5);
+  const prevPosition = useRef([0, 0, 0]);
 
   useFrame(({ camera, scene }) => {
     // Extract the rotation in degrees
@@ -174,23 +174,36 @@ const Model = ({ rotation, connection }: ModelProps) => {
       z: camera.rotation.z,
     };
 
-    const roundedCurrentRotation = {
-      x: Number(currentRotation.x.toFixed(2)),
-      y: Number(currentRotation.y.toFixed(2)),
-      z: Number(currentRotation.z.toFixed(2)),
+    const currentPosition = {
+      x: camera.position.x,
+      y: camera.position.y,
+      z: camera.position.z,
     };
 
-    const currentZoom = camera.position.z; // Get the zoom value
+    const roundedCurrentRotation = {
+      x: Number(currentRotation.x.toFixed(4)),
+      y: Number(currentRotation.y.toFixed(4)),
+      z: Number(currentRotation.z.toFixed(4)),
+    };
+
+    const roundedCurrentPosition = {
+      x: Number(currentPosition.x.toFixed(4)),
+      y: Number(currentPosition.y.toFixed(4)),
+      z: Number(currentPosition.z.toFixed(4)),
+    };
+    // const currentZoom = camera.position.z.toFixed(4); // Get the zoom value
 
     // Check if the rotation has changed since the last frame
     if (
-      roundedCurrentRotation.x !== Number(prevRotation.current[0].toFixed(2)) ||
-      roundedCurrentRotation.y !== Number(prevRotation.current[1].toFixed(2)) ||
-      roundedCurrentRotation.z !== Number(prevRotation.current[2].toFixed(2)) ||
-      currentZoom !== prevZoom
+      roundedCurrentRotation.x !== Number(prevRotation.current[0].toFixed(4)) ||
+      roundedCurrentRotation.y !== Number(prevRotation.current[1].toFixed(4)) ||
+      roundedCurrentRotation.z !== Number(prevRotation.current[2].toFixed(4)) ||
+      roundedCurrentPosition.x !== Number(prevRotation.current[0].toFixed(4)) ||
+      roundedCurrentPosition.y !== Number(prevRotation.current[1].toFixed(4)) ||
+      roundedCurrentPosition.z !== Number(prevRotation.current[2].toFixed(4))
     ) {
       // Log the new rotation values
-      console.log("Rotation (degrees):", roundedCurrentRotation);
+      //  console.log("Rotation (degrees):", roundedCurrentRotation);
 
       // Update the previous rotation
       prevRotation.current = [
@@ -198,12 +211,22 @@ const Model = ({ rotation, connection }: ModelProps) => {
         currentRotation.y,
         currentRotation.z,
       ];
+      prevPosition.current = [
+        currentPosition.x,
+        currentPosition.y,
+        currentPosition.z,
+      ];
+      // setPrevZoom(camera.position.z);
+      // console.log("zoom is ", currentPosition);
+
+      //console.log("zoom is ", scene.position);
 
       // Send the rotation values to the other peer
       //connection?.send(roundedCurrentRotation);
       connection?.send({
         rotation: roundedCurrentRotation,
-        zoom: currentZoom,
+        position: currentPosition,
+        // zoom: currentZoom,
       });
     }
   });
