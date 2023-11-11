@@ -11,6 +11,7 @@ export default function IndexPage() {
   //const [peer, setPeer] = useState<Peer | null>(null);
 
   const [qrcode, setQrcode] = useState("");
+  const [connect, setConnect] = useState(false);
   const [rotationDeg, setRotationDeg] = useState([0, 0, 0]);
   const [rotationPos, setRotationPos] = useState([
     0, 0, 5,
@@ -22,11 +23,13 @@ export default function IndexPage() {
   // Function to receive a "hi" message
   const receiveHiMessage = (data: unknown) => {
     // console.log(data);
+    if (!connect) setConnect(true);
     const receivedValues = data as {
       //  zoom: number;
       rotation: { x: number; y: number; z: number };
       position: { x: number; y: number; z: number };
     };
+
     const receivedRotationValues = receivedValues.rotation;
     setRotationDeg([
       receivedRotationValues.x,
@@ -73,21 +76,23 @@ export default function IndexPage() {
   }, []);
 
   return (
-    <div className="h-screen flex flex-col">
-      <h1>Connect with WebRTC and QR Code</h1>
-      <img className="h-40 w-40" src={qrcode} alt="QR code" />
-
-      <Canvas
-        className="flex-1 h-full"
-        shadows
-        dpr={[1, 2]}
-        camera={{ position: [0, 0, 5], fov: 50 }}
-      >
-        <Suspense fallback={null}>
-          <Model rotation={rotationDeg} position={rotationPos} />
-          <Environment preset="city" />
-        </Suspense>
-      </Canvas>
+    <div className="h-screen flex flex-col justify-center items-center">
+      {!connect && (
+          <h1 className="my-16">Connect with you phone to controle </h1>
+        ) && <img className="h-40 w-40" src={qrcode} alt="QR code" />}
+      {connect && (
+        <Canvas
+          className="flex-1 h-full"
+          shadows
+          dpr={[1, 2]}
+          camera={{ position: [0, 0, 5], fov: 50 }}
+        >
+          <Suspense fallback={null}>
+            <Model rotation={rotationDeg} position={rotationPos} />
+            <Environment preset="city" />
+          </Suspense>
+        </Canvas>
+      )}
     </div>
   );
 }

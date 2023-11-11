@@ -13,51 +13,6 @@ export default function ConnectPage() {
   const [peer, setPeer] = useState<any>();
   const [peerId, setPeerId] = useState("");
   const [connection, setConnection] = useState<any>();
-  const qrCodeRef = useRef(null);
-
-  const handleImageUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = event.target.files?.[0];
-    const reader = new qrcodeReader();
-
-    try {
-      if (file && file.type.startsWith("image/")) {
-        const fileReader = new FileReader();
-
-        fileReader.onload = async () => {
-          const dataURL = fileReader.result as string;
-          const img = new Image();
-          console.log("dataURL");
-          console.log(dataURL);
-          console.log("dataURL");
-
-          img.src = dataURL ?? "";
-          console.log(img);
-
-          img.onload = async () => {
-            reader.callback = function (err: any, value: any) {
-              if (err) {
-                console.error(err);
-              }
-              // __ Printing the decrypted value __ \\
-
-              console.log("value");
-              console.log(value);
-              setPeerId(value?.result);
-            };
-            // Decode the QR code
-
-            const decodedQR = await reader.decode(dataURL);
-          };
-        };
-
-        fileReader.readAsDataURL(file);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const connectToPeer = (id: string = "") => {
     console.log(`connecting ................`);
@@ -88,8 +43,6 @@ export default function ConnectPage() {
 
     // Get the current URL
     const url = new URL(window.location.href);
-    console.log("url is ", url);
-    console.log("url is ", url.href);
 
     // Check if the URL contains the ID as a query parameter
     const hasIdQueryParameter = url.searchParams.has("id");
@@ -105,7 +58,6 @@ export default function ConnectPage() {
         setPeerId(peerIdFromUrl);
         console.log("i have put this as input ", peerIdFromUrl);
         console.log("after setup the peer id in the state : ", peerId);
-
         //  connectToPeer(peerIdFromUrl);
       }
     }
@@ -118,23 +70,20 @@ export default function ConnectPage() {
 
   return (
     <div className="h-screen flex flex-col">
-      <h1>Connect with WebRTC by Scanning a QR Code</h1>
-
       {connection ? (
         <div>
           <p>Connected to peer: {peerId}</p>
           {/* Add your communication logic here */}
         </div>
       ) : (
-        <div>
-          <input type="file" accept="image/*" onChange={handleImageUpload} />
-          <div ref={qrCodeRef}></div> {/* Add a div to display the QR code */}
+        <div className=" flex justify-center items-center">
           <button
+            className=" bg-gray-500 text-center  cursor-pointer text-white pb-10 rounded-lg "
             onClick={() => {
               connectToPeer();
             }}
           >
-            Connect to Peer
+            Click to Connect
           </button>
         </div>
       )}
