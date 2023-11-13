@@ -34,7 +34,22 @@ export default function ConnectPage() {
       // newConnection?.send("hi");
     });
   };
+
+  const handleVisibilityChange = () => {
+    if (document.hidden) {
+      // Page is hidden (user switched to another app or clicked home button)
+      // Disconnect the existing connection
+      if (connection) {
+        connection.close();
+        setConnection(null);
+      }
+    }
+  };
+
   useEffect(() => {
+    // Add event listener for visibility change
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
     const Peer = require("peerjs").default;
     const peer = new Peer();
 
@@ -76,7 +91,7 @@ export default function ConnectPage() {
           {/* Add your communication logic here */}
         </div>
       ) : (
-        <div className=" flex justify-center items-center">
+        <div className=" flex justify-center items-center mt-4">
           <button
             className=" bg-gray-500 text-center  cursor-pointer text-white pb-10 rounded-lg "
             onClick={() => {

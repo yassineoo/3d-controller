@@ -72,6 +72,12 @@ export default function IndexPage() {
 
       // Listen for messages from the other peer
       connection.on("data", receiveHiMessage);
+
+      // Listen for the connection close event
+      connection.on("close", () => {
+        console.log("Connection closed");
+        setConnect(false);
+      });
     });
   }, []);
 
@@ -79,7 +85,7 @@ export default function IndexPage() {
     <div className="h-screen flex flex-col justify-center items-center">
       {!connect && (
           <h1 className="my-16">Connect with you phone to controle </h1>
-        ) && <img className="h-40 w-40" src={qrcode} alt="QR code" />}
+        ) && <img className=" w-1/6" src={qrcode} alt="QR code" />}
       {connect && (
         <Canvas
           className="flex-1 h-full"
