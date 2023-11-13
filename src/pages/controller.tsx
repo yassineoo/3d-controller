@@ -35,11 +35,15 @@ export default function ConnectPage() {
     });
   };
 
-  const handleVisibilityChange = () => {
+  const handleVisibilityChange = (connection: any) => {
     if (document.hidden) {
+      console.log("Page is hidden");
+
       // Page is hidden (user switched to another app or clicked home button)
       // Disconnect the existing connection
       if (connection) {
+        console.log("Page is closed");
+
         connection.close();
         setConnection(null);
       }
@@ -48,7 +52,7 @@ export default function ConnectPage() {
 
   useEffect(() => {
     // Add event listener for visibility change
-    document.addEventListener("visibilitychange", handleVisibilityChange);
+    //document.addEventListener("visibilitychange", handleVisibilityChange);
 
     const Peer = require("peerjs").default;
     const peer = new Peer();
@@ -83,6 +87,11 @@ export default function ConnectPage() {
     };
   }, []);
 
+  useEffect(() => {
+    document.addEventListener("visibilitychange", () =>
+      handleVisibilityChange(connection)
+    );
+  }, [connection]);
   return (
     <div className="h-screen flex flex-col">
       {connection ? (
