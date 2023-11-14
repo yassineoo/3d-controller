@@ -5,10 +5,14 @@ import { Suspense, useState, useRef, useEffect } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
 import QRCode from "qrcode";
+import { useRouter } from "next/router";
 //import Peer from "peerjs";
 
 export default function IndexPage() {
   //const [peer, setPeer] = useState<Peer | null>(null);
+  const router = useRouter();
+  const routePath = router.asPath;
+  const objectName = routePath.split("=")[1] || "planet";
 
   const [qrcode, setQrcode] = useState("");
   const [connect, setConnect] = useState(false);
@@ -23,6 +27,8 @@ export default function IndexPage() {
   // Function to receive a "hi" message
   const receiveHiMessage = (data: unknown) => {
     // console.log(data);
+    console.log(data);
+
     if (!connect) setConnect(true);
     const receivedValues = data as {
       //  zoom: number;
@@ -53,9 +59,10 @@ export default function IndexPage() {
 
     peer.on("open", () => {
       console.log("Peer ID:", peer.id);
-      QRCode.toDataURL(
-        `https://3d-controller-git-main-yassineoo.vercel.app/controller?id=${peer.id}`
-      )
+      const url = `${window.location.origin}/controller?component=${objectName}&id=${peer.id}`;
+      console.log(url);
+
+      QRCode.toDataURL(url)
         .then((url) => {
           setQrcode(url);
           // setPeer(peer);
@@ -94,7 +101,11 @@ export default function IndexPage() {
           camera={{ position: [0, 0, 5], fov: 50 }}
         >
           <Suspense fallback={null}>
-            <Model rotation={rotationDeg} position={rotationPos} />
+            <Model
+              rotation={rotationDeg}
+              position={rotationPos}
+              objectName={objectName}
+            />
             <Environment preset="city" />
           </Suspense>
         </Canvas>
@@ -106,10 +117,11 @@ export default function IndexPage() {
 type ModelProps = {
   rotation: number[];
   position: number[];
+  objectName: string;
 };
 
-const Model = ({ rotation, position }: ModelProps) => {
-  const gltf = useLoader(GLTFLoader, "./planet/scene.gltf");
+const Model = ({ rotation, position, objectName }: ModelProps) => {
+  const gltf = useLoader(GLTFLoader, `./${objectName}/scene.gltf`);
 
   // Track the previous rotation to detect changes
   const prevRotation = useRef([0, 0, 0]);

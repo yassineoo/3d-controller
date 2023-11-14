@@ -8,11 +8,31 @@ import { Suspense, useState, useRef, useEffect } from "react";
 
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
+import { useRouter } from "next/router";
 
 export default function ConnectPage() {
   const [peer, setPeer] = useState<any>();
   const [peerId, setPeerId] = useState("");
   const [connection, setConnection] = useState<any>();
+
+  const router = useRouter();
+  const url = router.asPath;
+
+  // Parse the URL
+  console.log(url);
+
+  // Split on '?' to get query string
+  const queryString = url?.split("?")[1];
+  console.log(queryString);
+
+  // Split on '&' to get component= part
+  const componentQuery = queryString?.split("&")[0];
+  console.log(componentQuery);
+
+  // Split on '=' and take first element
+  const objectName = componentQuery?.split("=")[1] || "planet";
+
+  console.log(objectName);
 
   const connectToPeer = (id: string = "") => {
     console.log(`connecting ................`);
@@ -59,7 +79,6 @@ export default function ConnectPage() {
 
     setPeer(peer);
     console.log(peer);
-
     // Get the current URL
     const url = new URL(window.location.href);
 
@@ -119,7 +138,11 @@ export default function ConnectPage() {
       >
         <OrbitControls enableRotate={true} />
         <Suspense fallback={null}>
-          <Model rotation={[3, 2, 0]} connection={connection} />
+          <Model
+            rotation={[3, 2, 0]}
+            connection={connection}
+            objectName={objectName}
+          />
           <Environment preset="city" />
         </Suspense>
       </Canvas>
@@ -130,10 +153,11 @@ export default function ConnectPage() {
 type ModelProps = {
   rotation: [number, number, number];
   connection: any;
+  objectName: string;
 };
 
-const Model = ({ rotation, connection }: ModelProps) => {
-  const gltf = useLoader(GLTFLoader, "./planet/scene.gltf");
+const Model = ({ rotation, connection, objectName }: ModelProps) => {
+  const gltf = useLoader(GLTFLoader, `./${objectName}/scene.gltf`);
 
   // Track the previous rotation to detect changes
   const prevRotation = useRef([0, 0, 0]);
