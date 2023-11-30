@@ -161,22 +161,6 @@ type ModelProps = {
 const Model = ({ rotation, connection, objectName }: ModelProps) => {
   const gltf = useLoader(GLTFLoader, `./${objectName}/scene.gltf`);
   // Simplify the model for better performance on phones
-  useEffect(() => {
-    if (gltf) {
-      const modifier = new SimplifyModifier();
-      gltf.scene.traverse((child: any) => {
-        if (child.isMesh) {
-          // Assuming you want to reduce the vertices by 50%
-          const simplifiedGeometry = modifier.modify(
-            child.geometry,
-            child.geometry.attributes.position.count * 0.5
-          );
-          child.geometry.dispose(); // Dispose the old geometry
-          child.geometry = simplifiedGeometry;
-        }
-      });
-    }
-  }, [gltf]);
 
   // Track the previous rotation to detect changes
   const prevRotation = useRef([0, 0, 0]);
