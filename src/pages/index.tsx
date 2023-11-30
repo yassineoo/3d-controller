@@ -38,7 +38,7 @@ export default function Home() {
         <div className="flex flex-row justify-around h-96 items-center">
           <ConnectButton title="Desktop" query="desktop_pc" />
           <ConnectButton title="planet" query="planet" />
-          <ConnectButton title="swimVilla" query="swimvilla" />
+          <ConnectButton title="swimvilla" query="swimvilla" />
         </div>
       </main>
     </div>
