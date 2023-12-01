@@ -1,3 +1,4 @@
+"use client";
 import { Environment, OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { Suspense, useState, useRef, useEffect } from "react";
@@ -6,6 +7,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
 import QRCode from "qrcode";
 import { useRouter } from "next/router";
+import Image from "next/image";
 //import Peer from "peerjs";
 
 export default function IndexPage() {
@@ -92,7 +94,7 @@ export default function IndexPage() {
     <div className="h-screen flex flex-col justify-center items-center">
       {!connect && (
           <h1 className="my-16">Connect with you phone to controle </h1>
-        ) && <img className=" w-1/6" src={qrcode} alt="QR code" />}
+        ) && <Image className=" w-1/6" src={qrcode} alt="QR code" />}
       {connect && (
         <Canvas
           className="flex-1 h-full"

@@ -10,8 +10,6 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
 import { useRouter } from "next/router";
 
-import { SimplifyModifier } from "three/examples/jsm/modifiers/SimplifyModifier.js";
-
 export default function ConnectPage() {
   const [peer, setPeer] = useState<any>();
   const [peerId, setPeerId] = useState("");
@@ -160,7 +158,6 @@ type ModelProps = {
 
 const Model = ({ rotation, connection, objectName }: ModelProps) => {
   const gltf = useLoader(GLTFLoader, `./${objectName}/scene.gltf`);
-  // Simplify the model for better performance on phones
 
   // Track the previous rotation to detect changes
   const prevRotation = useRef([0, 0, 0]);
