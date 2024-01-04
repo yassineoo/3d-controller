@@ -100,7 +100,7 @@ export default function ConnectPage() {
   };
 
   useEffect(() => {
-    console.log("selectedMaterial ", selectedMaterial);
+    //console.log("selectedMaterial ", selectedMaterial);
   }, [selectedMaterial]);
 
   useEffect(() => {
@@ -257,7 +257,7 @@ const Model = ({
         clickedMaterial?.userData?.onClick
       ) {
         clickedMaterial.userData.onClick();
-        console.log("clickedMaterial ", clickedMaterial.name);
+        // console.log("clickedMaterial ", clickedMaterial.name);
 
         setSelectedMaterial(clickedMaterial);
         setShowColorPicker(true);

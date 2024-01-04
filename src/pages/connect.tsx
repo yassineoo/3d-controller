@@ -146,7 +146,7 @@ const Model = ({ rotation, position, objectName, colorEdit }: ModelProps) => {
   const traverseMaterials = (node: any) => {
     if (node.isMesh && node.material) {
       if (Array.isArray(node.material)) {
-        console.log("array ", node.material);
+        //   console.log("array ", node.material);
 
         let selectedMaterial = node.material.find(
           (material: any) => material.name === colorEdit?.name
@@ -155,7 +155,7 @@ const Model = ({ rotation, position, objectName, colorEdit }: ModelProps) => {
 
         selectedMaterial?.color?.set(randomColor);
       } else if (node?.material?.name === colorEdit?.name) {
-        console.log("alone ", node.material);
+        //    console.log("alone ", node.material);
 
         const randomColor = new THREE.Color(colorEdit?.color);
 
