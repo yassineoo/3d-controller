@@ -149,7 +149,7 @@ const Model = ({ rotation, position, objectName, colorEdit }: ModelProps) => {
         console.log("array ", node.material);
 
         let selectedMaterial = node.material.find(
-          (material) => material.name === colorEdit?.name
+          (material: any) => material.name === colorEdit?.name
         );
         const randomColor = new THREE.Color(colorEdit?.color);
 
