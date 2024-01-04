@@ -18,7 +18,9 @@ export default function ConnectPage() {
 
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [color, setColor] = useState("#ffffff");
-  const [selectedMaterial, setSelectedMaterial] = useState(null);
+
+  const [selectedMaterial, setSelectedMaterial] =
+    useState<THREE.Material | null>(null);
 
   const router = useRouter();
   const url = router.asPath;
@@ -61,17 +63,18 @@ export default function ConnectPage() {
   };
 
   const handleApplyColor = () => {
-    if (selectedMaterial) {
+    if (selectedMaterial && "color" in selectedMaterial) {
       // Update the color of the selected material
-      selectedMaterial.color.set(color);
+      (selectedMaterial?.color as THREE.Color).set(color);
       setShowColorPicker(false);
     }
   };
 
   const handleColorChange = (newColor: any) => {
     // Update the color of the selected material
-    if (selectedMaterial) {
-      selectedMaterial.color.set(newColor.hex);
+    if (selectedMaterial && "color" in selectedMaterial) {
+      // Update the color of the selected material
+      (selectedMaterial?.color as THREE.Color).set(newColor.hex);
     }
     setColor(newColor.hex);
   };
@@ -244,12 +247,14 @@ const Model = ({
 
     if (intersects.length > 0) {
       const clickedObject = intersects[0].object;
-      const clickedMaterial = clickedObject.material;
-
+      let clickedMaterial: THREE.Material | null = null;
+      if ("material" in clickedObject) {
+        clickedMaterial = clickedObject.material as THREE.Material;
+      }
       if (
         clickedMaterial &&
-        clickedMaterial.userData &&
-        clickedMaterial.userData.onClick
+        clickedMaterial?.userData &&
+        clickedMaterial?.userData?.onClick
       ) {
         clickedMaterial.userData.onClick();
         console.log("clickedMaterial ", clickedMaterial.name);
