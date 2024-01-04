@@ -3,17 +3,22 @@
 import * as qrcodeReader from "qrcode-reader";
 
 import { Environment, OrbitControls } from "@react-three/drei";
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { Suspense, useState, useRef, useEffect } from "react";
 
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
 import { useRouter } from "next/router";
+import ColorPicker from "@/components/colorPicker";
 
 export default function ConnectPage() {
   const [peer, setPeer] = useState<any>();
   const [peerId, setPeerId] = useState("");
   const [connection, setConnection] = useState<any>();
+
+  const [showColorPicker, setShowColorPicker] = useState(false);
+  const [color, setColor] = useState("#ffffff");
+  const [selectedMaterial, setSelectedMaterial] = useState(null);
 
   const router = useRouter();
   const url = router.asPath;
@@ -55,8 +60,29 @@ export default function ConnectPage() {
     });
   };
 
+  const handleApplyColor = () => {
+    if (selectedMaterial) {
+      // Update the color of the selected material
+      selectedMaterial.color.set(color);
+      setShowColorPicker(false);
+    }
+  };
+
+  const handleColorChange = (newColor: any) => {
+    // Update the color of the selected material
+    if (selectedMaterial) {
+      selectedMaterial.color.set(newColor.hex);
+    }
+    setColor(newColor.hex);
+  };
+
+  const handleColorPickerClose = () => {
+    setShowColorPicker(false);
+  };
+
   const handleVisibilityChange = (connection: any) => {
-    if (document.hidden) {
+    //if (document.hidden) {
+    if (false) {
       console.log("Page is hidden");
 
       // Page is hidden (user switched to another app or clicked home button)
@@ -69,6 +95,10 @@ export default function ConnectPage() {
       }
     }
   };
+
+  useEffect(() => {
+    console.log("selectedMaterial ", selectedMaterial);
+  }, [selectedMaterial]);
 
   useEffect(() => {
     // Add event listener for visibility change
@@ -117,6 +147,14 @@ export default function ConnectPage() {
         <div>
           <p>Connected to peer: {peerId}</p>
           {/* Add your communication logic here */}
+          {showColorPicker && (
+            <ColorPicker
+              color={color}
+              onChange={handleColorChange}
+              onClose={handleColorPickerClose}
+              onApply={handleApplyColor}
+            />
+          )}
         </div>
       ) : (
         <div className=" flex justify-center items-center mt-4">
@@ -142,6 +180,11 @@ export default function ConnectPage() {
             rotation={[3, 2, 0]}
             connection={connection}
             objectName={objectName}
+            setSelectedMaterial={setSelectedMaterial}
+            selectedMaterial={selectedMaterial}
+            setShowColorPicker={setShowColorPicker}
+            color={color}
+            setColor={setColor}
           />
           <Environment preset="city" />
         </Suspense>
@@ -150,21 +193,82 @@ export default function ConnectPage() {
   );
 }
 
-type ModelProps = {
-  rotation: [number, number, number];
-  connection: any;
-  objectName: string;
-};
-
-const Model = ({ rotation, connection, objectName }: ModelProps) => {
+const Model = ({
+  rotation,
+  connection,
+  objectName,
+  setSelectedMaterial,
+  selectedMaterial,
+  setShowColorPicker,
+  setColor,
+  color,
+}: any) => {
   const gltf = useLoader(GLTFLoader, `./${objectName}/scene.gltf`);
+  const { camera, scene } = useThree(); // Assuming you have access to useThree
 
-  // Track the previous rotation to detect changes
+  // Track the previous rotation and position to detect changes
   const prevRotation = useRef([0, 0, 0]);
   const prevPosition = useRef([0, 0, 0]);
 
-  useFrame(({ camera, scene }) => {
-    // Extract the rotation in degrees
+  const traverseMaterials = (node: any) => {
+    if (node.isMesh && node.material) {
+      if (Array.isArray(node.material)) {
+        node.material.forEach((material: any) => {
+          // setRandomColor(material);
+          material.userData = { onClick: () => setSelectedMaterial(material) };
+          material.transparent = true;
+        });
+      } else {
+        // setRandomColor(node.material);
+        node.material.userData = {
+          onClick: () => setSelectedMaterial(node.material),
+        };
+        node.material.transparent = true;
+      }
+    }
+    if (node.children) {
+      node.children.forEach(traverseMaterials);
+    }
+  };
+
+  const handleClick = (event: any) => {
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+
+    const intersects = raycaster.intersectObjects(scene.children, true);
+
+    if (intersects.length > 0) {
+      const clickedObject = intersects[0].object;
+      const clickedMaterial = clickedObject.material;
+
+      if (
+        clickedMaterial &&
+        clickedMaterial.userData &&
+        clickedMaterial.userData.onClick
+      ) {
+        clickedMaterial.userData.onClick();
+        console.log("clickedMaterial ", clickedMaterial.name);
+
+        setSelectedMaterial(clickedMaterial);
+        setShowColorPicker(true);
+      }
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClick);
+
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, [scene]);
+
+  useFrame(() => {
     const currentRotation = {
       x: camera.rotation.x,
       y: camera.rotation.y,
@@ -188,9 +292,7 @@ const Model = ({ rotation, connection, objectName }: ModelProps) => {
       y: Number(currentPosition.y.toFixed(4)),
       z: Number(currentPosition.z.toFixed(4)),
     };
-    // const currentZoom = camera.position.z.toFixed(4); // Get the zoom value
 
-    // Check if the rotation has changed since the last frame
     if (
       roundedCurrentRotation.x !== Number(prevRotation.current[0].toFixed(4)) ||
       roundedCurrentRotation.y !== Number(prevRotation.current[1].toFixed(4)) ||
@@ -199,10 +301,6 @@ const Model = ({ rotation, connection, objectName }: ModelProps) => {
       roundedCurrentPosition.y !== Number(prevRotation.current[1].toFixed(4)) ||
       roundedCurrentPosition.z !== Number(prevRotation.current[2].toFixed(4))
     ) {
-      // Log the new rotation values
-      //  console.log("Rotation (degrees):", roundedCurrentRotation);
-
-      // Update the previous rotation
       prevRotation.current = [
         currentRotation.x,
         currentRotation.y,
@@ -213,20 +311,26 @@ const Model = ({ rotation, connection, objectName }: ModelProps) => {
         currentPosition.y,
         currentPosition.z,
       ];
-      // setPrevZoom(camera.position.z);
-      // console.log("zoom is ", currentPosition);
 
-      //console.log("zoom is ", scene.position);
-
-      // Send the rotation values to the other peer
-      //connection?.send(roundedCurrentRotation);
       connection?.send({
         rotation: roundedCurrentRotation,
         position: currentPosition,
-        // zoom: currentZoom,
+        colorEdit: {
+          color: color,
+          name: selectedMaterial ? selectedMaterial.name : null,
+        },
       });
     }
+
+    // Update material transparency based on selection
+    if (selectedMaterial) {
+      selectedMaterial.opacity = 0.5; // You can adjust the opacity as needed
+    }
   });
+
+  useEffect(() => {
+    traverseMaterials(scene);
+  }, [scene]); // Ensure materials are traversed when the scene changes
 
   return <primitive object={gltf.scene} />;
 };
