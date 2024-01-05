@@ -105,7 +105,7 @@ export default function ConnectPage() {
 
   useEffect(() => {
     // Add event listener for visibility change
-    //document.addEventListener("visibilitychange", handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     const Peer = require("peerjs").default;
     const peer = new Peer();
