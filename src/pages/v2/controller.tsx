@@ -1,53 +1,34 @@
 "use client";
-//import * as Peer from "peerjs";
-import * as qrcodeReader from "qrcode-reader";
-
 import { Environment, OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { Suspense, useState, useRef, useEffect } from "react";
-
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
 import { useRouter } from "next/router";
 import ColorPicker from "@/components/colorPicker";
-import Model from "./modal";
+import Model from "../modal";
+
+const AVAILABLE_OBJECTS = [
+  { name: "Desktop PC", query: "desktop_pc" },
+  { name: "Planet", query: "planet" },
+  { name: "Swim Villa", query: "swimvilla" },
+];
 
 export default function ConnectPage() {
   const [peer, setPeer] = useState<any>();
   const [peerId, setPeerId] = useState("");
   const [connection, setConnection] = useState<any>();
-
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [color, setColor] = useState("#ffffff");
-
   const [selectedMaterial, setSelectedMaterial] = useState<THREE.Material | null>(null);
+  const [currentObjectIndex, setCurrentObjectIndex] = useState(1); // Start with planet
 
   const router = useRouter();
-  const url = router.asPath;
 
-  // Parse the URL
-  console.log(url);
-
-  // Split on '?' to get query string
-  const queryString = url?.split("?")[1];
-  console.log(queryString);
-
-  // Split on '&' to get component= part
-  const componentQuery = queryString?.split("&")[0];
-  console.log(componentQuery);
-
-  // Split on '=' and take first element
-  const objectName = componentQuery?.split("=")[1] || "planet";
-
-  console.log(objectName);
+  const currentObject = AVAILABLE_OBJECTS[currentObjectIndex];
 
   const connectToPeer = (id: string = "") => {
     console.log(`connecting ................`);
-    console.log(`peer`);
-
-    console.log(peer);
-    console.log(peerId);
-    console.log(`peerId`);
 
     if (!peer || (!peerId && !id)) {
       console.log("Peer or peerId is missing");
@@ -56,24 +37,19 @@ export default function ConnectPage() {
 
     const newConnection = peer.connect(id ? id : peerId);
     newConnection.on("open", () => {
-      // Connection established, you can use `newConnection` for data transfer
       setConnection(newConnection);
-      // newConnection?.send("hi");
     });
   };
 
   const handleApplyColor = () => {
     if (selectedMaterial && "color" in selectedMaterial) {
-      // Update the color of the selected material
       (selectedMaterial?.color as THREE.Color).set(color);
       setShowColorPicker(false);
     }
   };
 
   const handleColorChange = (newColor: any) => {
-    // Update the color of the selected material
     if (selectedMaterial && "color" in selectedMaterial) {
-      // Update the color of the selected material
       (selectedMaterial?.color as THREE.Color).set(newColor.hex);
     }
     setColor(newColor.hex);
@@ -83,16 +59,28 @@ export default function ConnectPage() {
     setShowColorPicker(false);
   };
 
-  const handleVisibilityChange = (connection: any) => {
-    //if (document.hidden) {
-    if (false) {
-      console.log("Page is hidden");
+  const switchObject = (direction: "next" | "prev") => {
+    // Update local object index
+    if (direction === "next") {
+      setCurrentObjectIndex((prev) => (prev + 1) % AVAILABLE_OBJECTS.length);
+    } else {
+      setCurrentObjectIndex((prev) => (prev - 1 + AVAILABLE_OBJECTS.length) % AVAILABLE_OBJECTS.length);
+    }
 
-      // Page is hidden (user switched to another app or clicked home button)
-      // Disconnect the existing connection
+    // Send object switch command to main display
+    if (connection) {
+      connection.send({
+        objectSwitch: direction,
+      });
+    }
+  };
+
+  const handleVisibilityChange = (connection: any) => {
+    if (false) {
+      // Keep the original logic but disabled
+      console.log("Page is hidden");
       if (connection) {
         console.log("Page is closed");
-
         connection.close();
         setConnection(null);
       }
@@ -100,41 +88,24 @@ export default function ConnectPage() {
   };
 
   useEffect(() => {
-    //console.log("selectedMaterial ", selectedMaterial);
-  }, [selectedMaterial]);
-
-  useEffect(() => {
-    // Add event listener for visibility change
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     const Peer = require("peerjs").default;
     const peer = new Peer();
 
     setPeer(peer);
-    console.log(peer);
-    // Get the current URL
+
     const url = new URL(window.location.href);
-
-    // Check if the URL contains the ID as a query parameter
     const hasIdQueryParameter = url.searchParams.has("id");
-    console.log("id is ", hasIdQueryParameter);
 
-    // If the URL contains the ID as a query parameter, connect directly to the peer
     if (hasIdQueryParameter) {
       const peerIdFromUrl = url.searchParams.get("id");
-
-      console.log("Real id is ", peerIdFromUrl);
-
       if (peerIdFromUrl) {
         setPeerId(peerIdFromUrl);
-        console.log("i have put this as input ", peerIdFromUrl);
-        console.log("after setup the peer id in the state : ", peerId);
-        //  connectToPeer(peerIdFromUrl);
       }
     }
 
     return () => {
-      // Clean up resources when the component unmounts
       peer.destroy();
     };
   }, []);
@@ -142,33 +113,65 @@ export default function ConnectPage() {
   useEffect(() => {
     document.addEventListener("visibilitychange", () => handleVisibilityChange(connection));
   }, [connection]);
+
   return (
     <div className="h-screen flex flex-col">
+      {/* Header */}
+      <header className="bg-blue-600 text-white p-3">
+        <h1 className="font-bold text-lg text-center">3D Object Controller</h1>
+      </header>
+
+      {/* Connection Status */}
       {connection ? (
-        <div>
-          <p>Connected to peer: {peerId}</p>
-          {/* Add your communication logic here */}
+        <div className="bg-green-100 p-3 text-center">
+          <p className="text-green-800 font-semibold">✓ Connected Successfully</p>
           {showColorPicker && <ColorPicker color={color} onChange={handleColorChange} onClose={handleColorPickerClose} onApply={handleApplyColor} />}
         </div>
       ) : (
-        <div className=" flex justify-center items-center mt-4">
+        <div className="bg-yellow-100 p-3 text-center">
+          <p className="text-yellow-800 mb-3">Not Connected</p>
           <button
-            className=" bg-gray-500 text-center  cursor-pointer text-white pb-10 rounded-lg "
-            onClick={() => {
-              connectToPeer();
-            }}
+            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+            onClick={() => connectToPeer()}
           >
-            Click to Connect
+            Connect to Display
           </button>
         </div>
       )}
+
+      {/* Object Controls */}
+      {connection && (
+        <div className="bg-gray-100 p-4">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-bold text-gray-800">Current Object:</h3>
+            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">{currentObject.name}</span>
+          </div>
+
+          <div className="flex gap-3 justify-center">
+            <button
+              onClick={() => switchObject("prev")}
+              className="flex-1 bg-purple-500 hover:bg-purple-600 text-white py-3 px-4 rounded-lg font-semibold transition-colors"
+            >
+              ← Previous Object
+            </button>
+            <button
+              onClick={() => switchObject("next")}
+              className="flex-1 bg-purple-500 hover:bg-purple-600 text-white py-3 px-4 rounded-lg font-semibold transition-colors"
+            >
+              Next Object →
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* 3D Canvas */}
       <Canvas className="flex-1 h-full" shadows dpr={[1, 2]} camera={{ position: [0, 0, 5], fov: 50 }}>
         <OrbitControls enableRotate={true} />
         <Suspense fallback={null}>
           <Model
             rotation={[3, 2, 0]}
             connection={connection}
-            objectName={objectName}
+            objectName={currentObject.query}
             setSelectedMaterial={setSelectedMaterial}
             selectedMaterial={selectedMaterial}
             setShowColorPicker={setShowColorPicker}
