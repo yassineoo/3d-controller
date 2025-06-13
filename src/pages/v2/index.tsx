@@ -2,10 +2,11 @@
 import { Environment, OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { Suspense, useState, useRef, useEffect } from "react";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
-import QRCode from "qrcode";
-import Image from "next/image";
+import { useRouter } from "next/router";
+import ColorPicker from "@/components/colorPicker";
+import dynamic from "next/dynamic";
+import Model from "../modal";
 
 const AVAILABLE_OBJECTS = [
   { name: "Desktop PC", query: "desktop_pc" },
@@ -13,184 +14,186 @@ const AVAILABLE_OBJECTS = [
   { name: "Swim Villa", query: "swimvilla" },
 ];
 
-export default function IndexPage() {
-  const [qrcode, setQrcode] = useState("");
-  const [connect, setConnect] = useState(false);
-  const [rotationDeg, setRotationDeg] = useState([0, 0, 0]);
-  const [rotationPos, setRotationPos] = useState([0, 0, 5]);
-  const [colorEdit, setColor] = useState({ color: "#fff", name: "" });
-  const [currentObjectIndex, setCurrentObjectIndex] = useState(1); // Start with planet (index 1)
-  const [peer, setPeer] = useState<any>(null);
+export default function ConnectPage() {
+  const [mounted, setMounted] = useState(false);
+  const [peer, setPeer] = useState<any>();
+  const [peerId, setPeerId] = useState("");
+  const [connection, setConnection] = useState<any>();
+  const [showColorPicker, setShowColorPicker] = useState(false);
+  const [color, setColor] = useState("#ffffff");
+  const [selectedMaterial, setSelectedMaterial] = useState<THREE.Material | null>(null);
+  const [currentObjectIndex, setCurrentObjectIndex] = useState(1); // Start with planet
+
+  const router = useRouter();
 
   const currentObject = AVAILABLE_OBJECTS[currentObjectIndex];
 
-  // Function to receive messages from controller
-  const receiveMessage = (data: unknown) => {
-    if (!connect) setConnect(true);
+  // Ensure component only renders on client
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-    const receivedValues = data as {
-      rotation: { x: number; y: number; z: number };
-      position: { x: number; y: number; z: number };
-      colorEdit: { color: string; name: string };
-      objectSwitch?: "next" | "prev";
-    };
+  const connectToPeer = (id: string = "") => {
+    console.log(`connecting ................`);
 
-    // Handle object switching
-    if (receivedValues.objectSwitch) {
-      if (receivedValues.objectSwitch === "next") {
-        setCurrentObjectIndex((prev) => (prev + 1) % AVAILABLE_OBJECTS.length);
-      } else if (receivedValues.objectSwitch === "prev") {
-        setCurrentObjectIndex((prev) => (prev - 1 + AVAILABLE_OBJECTS.length) % AVAILABLE_OBJECTS.length);
-      }
-      return; // Don't process other values when switching objects
+    if (!peer || (!peerId && !id)) {
+      console.log("Peer or peerId is missing");
+      return;
     }
 
-    const receivedRotationValues = receivedValues.rotation;
-    setRotationDeg([receivedRotationValues.x, receivedRotationValues.y, receivedRotationValues.z]);
+    const newConnection = peer.connect(id ? id : peerId);
+    newConnection.on("open", () => {
+      setConnection(newConnection);
+    });
+  };
 
-    setRotationPos([receivedValues.position.x, receivedValues.position.y, receivedValues.position.z]);
+  const handleApplyColor = () => {
+    if (selectedMaterial && "color" in selectedMaterial) {
+      (selectedMaterial?.color as THREE.Color).set(color);
+      setShowColorPicker(false);
+    }
+  };
 
-    if (receivedValues.colorEdit) setColor(receivedValues.colorEdit);
+  const handleColorChange = (newColor: any) => {
+    if (selectedMaterial && "color" in selectedMaterial) {
+      (selectedMaterial?.color as THREE.Color).set(newColor.hex);
+    }
+    setColor(newColor.hex);
+  };
+
+  const handleColorPickerClose = () => {
+    setShowColorPicker(false);
   };
 
   const switchObject = (direction: "next" | "prev") => {
+    // Update local object index
     if (direction === "next") {
       setCurrentObjectIndex((prev) => (prev + 1) % AVAILABLE_OBJECTS.length);
     } else {
       setCurrentObjectIndex((prev) => (prev - 1 + AVAILABLE_OBJECTS.length) % AVAILABLE_OBJECTS.length);
     }
+
+    // Send object switch command to main display
+    if (connection) {
+      connection.send({
+        objectSwitch: direction,
+      });
+    }
+  };
+
+  const handleVisibilityChange = (connection: any) => {
+    if (false) {
+      // Keep the original logic but disabled
+      console.log("Page is hidden");
+      if (connection) {
+        console.log("Page is closed");
+        connection.close();
+        setConnection(null);
+      }
+    }
   };
 
   useEffect(() => {
+    if (!mounted) return;
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
     const Peer = require("peerjs").default;
-    const newPeer = new Peer();
-    setPeer(newPeer);
+    const peer = new Peer();
 
-    newPeer.on("open", () => {
-      console.log("Peer ID:", newPeer.id);
-      const url = `${window.location.origin}/v2/controller?id=${newPeer.id}`;
-      console.log(url);
+    setPeer(peer);
 
-      QRCode.toDataURL(url)
-        .then((url) => {
-          setQrcode(url);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    });
+    const url = new URL(window.location.href);
+    const hasIdQueryParameter = url.searchParams.has("id");
 
-    newPeer.on("connection", (connection: any) => {
-      console.log("connection established");
+    if (hasIdQueryParameter) {
+      const peerIdFromUrl = url.searchParams.get("id");
+      if (peerIdFromUrl) {
+        setPeerId(peerIdFromUrl);
+      }
+    }
 
-      connection.on("data", receiveMessage);
-
-      connection.on("close", () => {
-        console.log("Connection closed");
-        setConnect(false);
-      });
-    });
+    // Don't render until mounted (client-side only)
+    if (!mounted) {
+      return undefined;
+    }
 
     return () => {
-      if (newPeer) {
-        newPeer.destroy();
-      }
+      peer.destroy();
     };
-  }, []);
+  }, [mounted]);
+
+  useEffect(() => {
+    document.addEventListener("visibilitychange", () => handleVisibilityChange(connection));
+  }, [connection]);
 
   return (
     <div className="h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-blue-600 text-white p-4">
-        <h1 className="font-extrabold text-xl text-center">AR Object Controller</h1>
+      <header className="bg-blue-600 text-white p-3">
+        <h1 className="font-bold text-lg text-center">3D Object Controller</h1>
       </header>
 
       {/* Connection Status */}
-      {!connect && (
-        <div className="flex flex-col justify-center items-center flex-1 bg-gray-100">
-          <h2 className="text-2xl font-bold mb-8 text-gray-800">Scan QR Code to Connect Your Phone</h2>
-          {qrcode && (
-            <div className="bg-white p-4 rounded-lg shadow-lg">
-              <img className="w-64 h-64" src={qrcode} alt="QR code" />
-            </div>
-          )}
-          <p className="mt-4 text-gray-600 text-center max-w-md">Use your phone's camera to scan the QR code and start controlling 3D objects</p>
+      {connection ? (
+        <div className="bg-green-100 p-3 text-center">
+          <p className="text-green-800 font-semibold">✓ Connected Successfully</p>
+          {showColorPicker && <ColorPicker color={color} onChange={handleColorChange} onClose={handleColorPickerClose} onApply={handleApplyColor} />}
+        </div>
+      ) : (
+        <div className="bg-yellow-100 p-3 text-center">
+          <p className="text-yellow-800 mb-3">Not Connected</p>
+          <button
+            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+            onClick={() => connectToPeer()}
+          >
+            Connect to Display
+          </button>
         </div>
       )}
 
-      {/* 3D Canvas when connected */}
-      {connect && (
-        <div className="flex-1 relative">
-          {/* Object Info Overlay */}
-          <div className="absolute top-4 left-4 z-10 bg-black bg-opacity-70 text-white p-3 rounded-lg">
-            <h3 className="font-bold">Current Object:</h3>
-            <p>{currentObject.name}</p>
+      {/* Object Controls */}
+      {connection && (
+        <div className="bg-gray-100 p-4">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-bold text-gray-800">Current Object:</h3>
+            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">{currentObject.name}</span>
           </div>
 
-          {/* Object Switch Controls */}
-          <div className="absolute top-4 right-4 z-10 flex gap-2">
+          <div className="flex gap-3 justify-center">
             <button
               onClick={() => switchObject("prev")}
-              className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg shadow-lg transition-colors"
-              title="Previous Object"
+              className="flex-1 bg-purple-500 hover:bg-purple-600 text-white py-3 px-4 rounded-lg font-semibold transition-colors"
             >
-              ← Prev
+              ← Previous Object
             </button>
             <button
               onClick={() => switchObject("next")}
-              className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg shadow-lg transition-colors"
-              title="Next Object"
+              className="flex-1 bg-purple-500 hover:bg-purple-600 text-white py-3 px-4 rounded-lg font-semibold transition-colors"
             >
-              Next →
+              Next Object →
             </button>
           </div>
-
-          <Canvas className="w-full h-full" shadows dpr={[1, 2]} camera={{ position: [0, 0, 5], fov: 50 }}>
-            <Suspense fallback={null}>
-              <Model rotation={rotationDeg} position={rotationPos} objectName={currentObject.query} colorEdit={colorEdit} />
-              <Environment preset="city" />
-            </Suspense>
-          </Canvas>
         </div>
       )}
+
+      {/* 3D Canvas */}
+      <Canvas className="flex-1 h-full" shadows dpr={[1, 2]} camera={{ position: [0, 0, 5], fov: 50 }}>
+        <OrbitControls enableRotate={true} />
+        <Suspense fallback={null}>
+          <Model
+            rotation={[3, 2, 0]}
+            connection={connection}
+            objectName={currentObject.query}
+            setSelectedMaterial={setSelectedMaterial}
+            selectedMaterial={selectedMaterial}
+            setShowColorPicker={setShowColorPicker}
+            color={color}
+            setColor={setColor}
+          />
+          <Environment preset="city" />
+        </Suspense>
+      </Canvas>
     </div>
   );
 }
-
-type ModelProps = {
-  rotation: number[];
-  position: number[];
-  objectName: string;
-  colorEdit: { color: string; name: string };
-};
-
-const Model = ({ rotation, position, objectName, colorEdit }: ModelProps) => {
-  const gltf = useLoader(GLTFLoader, `./${objectName}/scene.gltf`);
-
-  const traverseMaterials = (node: any) => {
-    if (node.isMesh && node.material) {
-      if (Array.isArray(node.material)) {
-        let selectedMaterial = node.material.find((material: any) => material.name === colorEdit?.name);
-        const randomColor = new THREE.Color(colorEdit?.color);
-        selectedMaterial?.color?.set(randomColor);
-      } else if (node?.material?.name === colorEdit?.name) {
-        const randomColor = new THREE.Color(colorEdit?.color);
-        node.material?.color?.set(randomColor);
-      }
-    }
-    if (node.children) {
-      node.children.forEach(traverseMaterials);
-    }
-  };
-
-  const prevRotation = useRef([0, 0, 0]);
-
-  useFrame(({ camera, scene }) => {
-    camera.rotation.set(rotation[0], rotation[1], rotation[2]);
-    camera.position.set(position[0], position[1], position[2]);
-    traverseMaterials(scene);
-    prevRotation.current = rotation;
-  });
-
-  return <primitive object={gltf.scene} />;
-};
