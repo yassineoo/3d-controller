@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
 
-const Model = ({ rotation, connection, objectName, setSelectedMaterial, selectedMaterial, setShowColorPicker, setColor, color }: any) => {
+const Model = ({ rotation, connection, objectName = "planet", setSelectedMaterial, selectedMaterial, setShowColorPicker, setColor, color }: any) => {
   const gltf = useLoader(GLTFLoader, `./${objectName}/scene.gltf`);
   const { camera, scene } = useThree(); // Assuming you have access to useThree
 
