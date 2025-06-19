@@ -7,13 +7,13 @@ settings:
 dependencies:
   '@react-three/drei':
     specifier: ^10.3.0
-    version: 10.3.0(@react-three/fiber@9.1.2)(@types/react@18.3.23)(@types/three@0.157.2)(react-dom@18.3.1)(react@18.3.1)(three@0.177.0)
+    version: 10.3.0(@react-three/fiber@9.1.2)(@types/react@18.3.23)(@types/three@0.157.2)(react-dom@19.1.0)(react@19.1.0)(three@0.177.0)
   '@react-three/fiber':
     specifier: ^9.1.2
-    version: 9.1.2(@types/react@18.3.23)(react-dom@18.3.1)(react@18.3.1)(three@0.177.0)
+    version: 9.1.2(@types/react@18.3.23)(react-dom@19.1.0)(react@19.1.0)(three@0.177.0)
   next:
     specifier: 13.5.6
-    version: 13.5.6(react-dom@18.3.1)(react@18.3.1)
+    version: 13.5.6(react-dom@19.1.0)(react@19.1.0)
   peerjs:
     specifier: ^1.5.1
     version: 1.5.5
@@ -24,14 +24,14 @@ dependencies:
     specifier: ^1.0.4
     version: 1.0.4
   react:
-    specifier: ^18
-    version: 18.3.1
+    specifier: ^19.1.0
+    version: 19.1.0
   react-color:
     specifier: ^2.19.3
-    version: 2.19.3(react@18.3.1)
+    version: 2.19.3(react@19.1.0)
   react-dom:
-    specifier: ^18
-    version: 18.3.1(react@18.3.1)
+    specifier: ^19.1.0
+    version: 19.1.0(react@19.1.0)
   three:
     specifier: ^0.177.0
     version: 0.177.0
@@ -80,12 +80,12 @@ packages:
     engines: {node: '>=6.9.0'}
     dev: false
 
-  /@icons/material@0.2.4(react@18.3.1):
+  /@icons/material@0.2.4(react@19.1.0):
     resolution: {integrity: sha512-QPcGmICAPbGLGb6F/yNf/KzKqvFx8z5qx3D1yFqVAjoFmXK35EgyW+cJ57Te3CNsmzblwtzakLGFqHPqrfb4Tw==}
     peerDependencies:
       react: '*'
     dependencies:
-      react: 18.3.1
+      react: 19.1.0
     dev: false
 
   /@isaacs/cliui@8.0.2:
@@ -261,7 +261,7 @@ packages:
     dev: true
     optional: true
 
-  /@react-three/drei@10.3.0(@react-three/fiber@9.1.2)(@types/react@18.3.23)(@types/three@0.157.2)(react-dom@18.3.1)(react@18.3.1)(three@0.177.0):
+  /@react-three/drei@10.3.0(@react-three/fiber@9.1.2)(@types/react@18.3.23)(@types/three@0.157.2)(react-dom@19.1.0)(react@19.1.0)(three@0.177.0):
     resolution: {integrity: sha512-+4NHCAUI38jp8XlbuKKWl/23y3F/JKdkvnYsrVXxhw150OyWKJoft+Yyd7dl6awxfV/Gn08x3R9pRRFUuDQwDA==}
     peerDependencies:
       '@react-three/fiber': ^9.0.0
@@ -275,8 +275,8 @@ packages:
       '@babel/runtime': 7.27.6
       '@mediapipe/tasks-vision': 0.10.17
       '@monogrid/gainmap-js': 3.1.0(three@0.177.0)
-      '@react-three/fiber': 9.1.2(@types/react@18.3.23)(react-dom@18.3.1)(react@18.3.1)(three@0.177.0)
-      '@use-gesture/react': 10.3.1(react@18.3.1)
+      '@react-three/fiber': 9.1.2(@types/react@18.3.23)(react-dom@19.1.0)(react@19.1.0)(three@0.177.0)
+      '@use-gesture/react': 10.3.1(react@19.1.0)
       camera-controls: 2.10.1(three@0.177.0)
       cross-env: 7.0.3
       detect-gpu: 5.0.70
@@ -284,26 +284,26 @@ packages:
       hls.js: 1.6.5
       maath: 0.10.8(@types/three@0.157.2)(three@0.177.0)
       meshline: 3.3.1(three@0.177.0)
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
       stats-gl: 2.4.2(@types/three@0.157.2)(three@0.177.0)
       stats.js: 0.17.0
-      suspend-react: 0.1.3(react@18.3.1)
+      suspend-react: 0.1.3(react@19.1.0)
       three: 0.177.0
       three-mesh-bvh: 0.8.3(three@0.177.0)
       three-stdlib: 2.36.0(three@0.177.0)
       troika-three-text: 0.52.4(three@0.177.0)
-      tunnel-rat: 0.1.2(@types/react@18.3.23)(react@18.3.1)
-      use-sync-external-store: 1.5.0(react@18.3.1)
+      tunnel-rat: 0.1.2(@types/react@18.3.23)(react@19.1.0)
+      use-sync-external-store: 1.5.0(react@19.1.0)
       utility-types: 3.11.0
-      zustand: 5.0.5(@types/react@18.3.23)(react@18.3.1)(use-sync-external-store@1.5.0)
+      zustand: 5.0.5(@types/react@18.3.23)(react@19.1.0)(use-sync-external-store@1.5.0)
     transitivePeerDependencies:
       - '@types/react'
       - '@types/three'
       - immer
     dev: false
 
-  /@react-three/fiber@9.1.2(@types/react@18.3.23)(react-dom@18.3.1)(react@18.3.1)(three@0.177.0):
+  /@react-three/fiber@9.1.2(@types/react@18.3.23)(react-dom@19.1.0)(react@19.1.0)(three@0.177.0):
     resolution: {integrity: sha512-k8FR9yVHV9kIF3iuOD0ds5hVymXYXfgdKklqziBVod9ZEJ8uk05Zjw29J/omU3IKeUfLNAIHfxneN3TUYM4I2w==}
     peerDependencies:
       expo: '>=43.0'
@@ -333,16 +333,16 @@ packages:
       '@types/webxr': 0.5.22
       base64-js: 1.5.1
       buffer: 6.0.3
-      its-fine: 2.0.0(@types/react@18.3.23)(react@18.3.1)
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      react-reconciler: 0.31.0(react@18.3.1)
-      react-use-measure: 2.1.7(react-dom@18.3.1)(react@18.3.1)
+      its-fine: 2.0.0(@types/react@18.3.23)(react@19.1.0)
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
+      react-reconciler: 0.31.0(react@19.1.0)
+      react-use-measure: 2.1.7(react-dom@19.1.0)(react@19.1.0)
       scheduler: 0.25.0
-      suspend-react: 0.1.3(react@18.3.1)
+      suspend-react: 0.1.3(react@19.1.0)
       three: 0.177.0
-      use-sync-external-store: 1.5.0(react@18.3.1)
-      zustand: 5.0.5(@types/react@18.3.23)(react@18.3.1)(use-sync-external-store@1.5.0)
+      use-sync-external-store: 1.5.0(react@19.1.0)
+      zustand: 5.0.5(@types/react@18.3.23)(react@19.1.0)(use-sync-external-store@1.5.0)
     transitivePeerDependencies:
       - '@types/react'
       - immer
@@ -434,13 +434,13 @@ packages:
     resolution: {integrity: sha512-WcINiDt8WjqBdUXye25anHiNxPc0VOrlT8F6LLkU6cycrOGUDyY/yyFmsg3k8i5OLvv25llc0QC45GhR/C8llw==}
     dev: false
 
-  /@use-gesture/react@10.3.1(react@18.3.1):
+  /@use-gesture/react@10.3.1(react@19.1.0):
     resolution: {integrity: sha512-Yy19y6O2GJq8f7CHf7L0nxL8bf4PZCPaVOCgJrusOeFHY1LvHgYXnmnXg6N5iwAnbgbZCDjo60SiM6IPJi9C5g==}
     peerDependencies:
       react: '>= 16.8.0'
     dependencies:
       '@use-gesture/core': 10.3.1
-      react: 18.3.1
+      react: 19.1.0
     dev: false
 
   /ansi-regex@5.0.1:
@@ -853,13 +853,13 @@ packages:
   /isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
 
-  /its-fine@2.0.0(@types/react@18.3.23)(react@18.3.1):
+  /its-fine@2.0.0(@types/react@18.3.23)(react@19.1.0):
     resolution: {integrity: sha512-KLViCmWx94zOvpLwSlsx6yOCeMhZYaxrJV87Po5k/FoZzcPSahvK5qJ7fYhS61sZi5ikmh2S3Hz55A2l3U69ng==}
     peerDependencies:
       react: ^19.0.0
     dependencies:
       '@types/react-reconciler': 0.28.9(@types/react@18.3.23)
-      react: 18.3.1
+      react: 19.1.0
     transitivePeerDependencies:
       - '@types/react'
     dev: false
@@ -985,7 +985,7 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  /next@13.5.6(react-dom@18.3.1)(react@18.3.1):
+  /next@13.5.6(react-dom@19.1.0)(react@19.1.0):
     resolution: {integrity: sha512-Y2wTcTbO4WwEsVb4A8VSnOsG1I9ok+h74q0ZdxkwM3EODqrs4pasq7O0iUxbcS9VtWMicG7f3+HAj0r1+NtKSw==}
     engines: {node: '>=16.14.0'}
     hasBin: true
@@ -1005,9 +1005,9 @@ packages:
       busboy: 1.6.0
       caniuse-lite: 1.0.30001723
       postcss: 8.4.31
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      styled-jsx: 5.1.1(react@18.3.1)
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
+      styled-jsx: 5.1.1(react@19.1.0)
       watchpack: 2.4.0
     optionalDependencies:
       '@next/swc-darwin-arm64': 13.5.6
@@ -1245,46 +1245,45 @@ packages:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
     dev: true
 
-  /react-color@2.19.3(react@18.3.1):
+  /react-color@2.19.3(react@19.1.0):
     resolution: {integrity: sha512-LEeGE/ZzNLIsFWa1TMe8y5VYqr7bibneWmvJwm1pCn/eNmrabWDh659JSPn9BuaMpEfU83WTOJfnCcjDZwNQTA==}
     peerDependencies:
       react: '*'
     dependencies:
-      '@icons/material': 0.2.4(react@18.3.1)
+      '@icons/material': 0.2.4(react@19.1.0)
       lodash: 4.17.21
       lodash-es: 4.17.21
       material-colors: 1.2.6
       prop-types: 15.8.1
-      react: 18.3.1
-      reactcss: 1.2.3(react@18.3.1)
+      react: 19.1.0
+      reactcss: 1.2.3(react@19.1.0)
       tinycolor2: 1.6.0
     dev: false
 
-  /react-dom@18.3.1(react@18.3.1):
-    resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
+  /react-dom@19.1.0(react@19.1.0):
+    resolution: {integrity: sha512-Xs1hdnE+DyKgeHJeJznQmYMIBG3TKIHJJT95Q58nHLSrElKlGQqDTR2HQ9fx5CN/Gk6Vh/kupBTDLU11/nDk/g==}
     peerDependencies:
-      react: ^18.3.1
+      react: ^19.1.0
     dependencies:
-      loose-envify: 1.4.0
-      react: 18.3.1
-      scheduler: 0.23.2
+      react: 19.1.0
+      scheduler: 0.26.0
     dev: false
 
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
     dev: false
 
-  /react-reconciler@0.31.0(react@18.3.1):
+  /react-reconciler@0.31.0(react@19.1.0):
     resolution: {integrity: sha512-7Ob7Z+URmesIsIVRjnLoDGwBEG/tVitidU0nMsqX/eeJaLY89RISO/10ERe0MqmzuKUUB1rmY+h1itMbUHg9BQ==}
     engines: {node: '>=0.10.0'}
     peerDependencies:
       react: ^19.0.0
     dependencies:
-      react: 18.3.1
+      react: 19.1.0
       scheduler: 0.25.0
     dev: false
 
-  /react-use-measure@2.1.7(react-dom@18.3.1)(react@18.3.1):
+  /react-use-measure@2.1.7(react-dom@19.1.0)(react@19.1.0):
     resolution: {integrity: sha512-KrvcAo13I/60HpwGO5jpW7E9DfusKyLPLvuHlUyP5zqnmAPhNc6qTRjUQrdTADl0lpPpDVU2/Gg51UlOGHXbdg==}
     peerDependencies:
       react: '>=16.13'
@@ -1293,24 +1292,22 @@ packages:
       react-dom:
         optional: true
     dependencies:
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
     dev: false
 
-  /react@18.3.1:
-    resolution: {integrity: sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==}
+  /react@19.1.0:
+    resolution: {integrity: sha512-FS+XFBNvn3GTAWq26joslQgWNoFu08F4kl0J4CgdNKADkdSGXQyTCnKteIAJy96Br6YbpEU1LSzV5dYtjMkMDg==}
     engines: {node: '>=0.10.0'}
-    dependencies:
-      loose-envify: 1.4.0
     dev: false
 
-  /reactcss@1.2.3(react@18.3.1):
+  /reactcss@1.2.3(react@19.1.0):
     resolution: {integrity: sha512-KiwVUcFu1RErkI97ywr8nvx8dNOpT03rbnma0SSalTYjkrPYaEajR4a/MRt6DZ46K6arDRbWMNHF+xH7G7n/8A==}
     peerDependencies:
       react: '*'
     dependencies:
       lodash: 4.17.21
-      react: 18.3.1
+      react: 19.1.0
     dev: false
 
   /read-cache@1.0.0:
@@ -1361,14 +1358,12 @@ packages:
       queue-microtask: 1.2.3
     dev: true
 
-  /scheduler@0.23.2:
-    resolution: {integrity: sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==}
-    dependencies:
-      loose-envify: 1.4.0
-    dev: false
-
   /scheduler@0.25.0:
     resolution: {integrity: sha512-xFVuu11jh+xcO7JOAGJNOXld8/TcEHK/4CituBUeUb5hqxJLj9YuemAEuvm9gQ/+pgXYfbQuqAkiYu+u7YEsNA==}
+    dev: false
+
+  /scheduler@0.26.0:
+    resolution: {integrity: sha512-NlHwttCI/l5gCPR3D1nNXtWABUmBwvZpEQiD4IXSbIDq8BzLIK/7Ir5gTFSGZDUu37K5cMNp0hFtzO38sC7gWA==}
     dev: false
 
   /sdp@3.2.1:
@@ -1447,7 +1442,7 @@ packages:
       ansi-regex: 6.1.0
     dev: true
 
-  /styled-jsx@5.1.1(react@18.3.1):
+  /styled-jsx@5.1.1(react@19.1.0):
     resolution: {integrity: sha512-pW7uC1l4mBZ8ugbiZrcIsiIvVx1UmTfw7UkC3Um2tmfUq9Bhk8IiyEIPl6F8agHgjzku6j0xQEZbfA5uSgSaCw==}
     engines: {node: '>= 12.0.0'}
     peerDependencies:
@@ -1461,7 +1456,7 @@ packages:
         optional: true
     dependencies:
       client-only: 0.0.1
-      react: 18.3.1
+      react: 19.1.0
     dev: false
 
   /sucrase@3.35.0:
@@ -1483,12 +1478,12 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /suspend-react@0.1.3(react@18.3.1):
+  /suspend-react@0.1.3(react@19.1.0):
     resolution: {integrity: sha512-aqldKgX9aZqpoDp3e8/BZ8Dm7x1pJl+qI3ZKxDN0i/IQTWUwBx/ManmlVJ3wowqbno6c2bmiIfs+Um6LbsjJyQ==}
     peerDependencies:
       react: '>=17.0'
     dependencies:
-      react: 18.3.1
+      react: 19.1.0
     dev: false
 
   /tailwindcss@3.4.17:
@@ -1604,10 +1599,10 @@ packages:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
     dev: false
 
-  /tunnel-rat@0.1.2(@types/react@18.3.23)(react@18.3.1):
+  /tunnel-rat@0.1.2(@types/react@18.3.23)(react@19.1.0):
     resolution: {integrity: sha512-lR5VHmkPhzdhrM092lI2nACsLO4QubF0/yoOhzX7c+wIpbN1GjHNzCc91QlpxBi+cnx8vVJ+Ur6vL5cEoQPFpQ==}
     dependencies:
-      zustand: 4.5.7(@types/react@18.3.23)(react@18.3.1)
+      zustand: 4.5.7(@types/react@18.3.23)(react@19.1.0)
     transitivePeerDependencies:
       - '@types/react'
       - immer
@@ -1635,12 +1630,12 @@ packages:
       picocolors: 1.1.1
     dev: true
 
-  /use-sync-external-store@1.5.0(react@18.3.1):
+  /use-sync-external-store@1.5.0(react@19.1.0):
     resolution: {integrity: sha512-Rb46I4cGGVBmjamjphe8L/UnvJD+uPPtTkNvX5mZgqdbavhI4EbgIWJiIHXJ8bc/i9EQGPRh4DwEURJ552Do0A==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     dependencies:
-      react: 18.3.1
+      react: 19.1.0
     dev: false
 
   /util-deprecate@1.0.2:
@@ -1748,7 +1743,7 @@ packages:
       yargs-parser: 18.1.3
     dev: false
 
-  /zustand@4.5.7(@types/react@18.3.23)(react@18.3.1):
+  /zustand@4.5.7(@types/react@18.3.23)(react@19.1.0):
     resolution: {integrity: sha512-CHOUy7mu3lbD6o6LJLfllpjkzhHXSBlX8B9+qPddUsIfeF5S/UZ5q0kmCsnRqT1UHFQZchNFDDzMbQsuesHWlw==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
@@ -1764,11 +1759,11 @@ packages:
         optional: true
     dependencies:
       '@types/react': 18.3.23
-      react: 18.3.1
-      use-sync-external-store: 1.5.0(react@18.3.1)
+      react: 19.1.0
+      use-sync-external-store: 1.5.0(react@19.1.0)
     dev: false
 
-  /zustand@5.0.5(@types/react@18.3.23)(react@18.3.1)(use-sync-external-store@1.5.0):
+  /zustand@5.0.5(@types/react@18.3.23)(react@19.1.0)(use-sync-external-store@1.5.0):
     resolution: {integrity: sha512-mILtRfKW9xM47hqxGIxCv12gXusoY/xTSHBYApXozR0HmQv299whhBeeAcRy+KrPPybzosvJBCOmVjq6x12fCg==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
@@ -1787,6 +1782,6 @@ packages:
         optional: true
     dependencies:
       '@types/react': 18.3.23
-      react: 18.3.1
-      use-sync-external-store: 1.5.0(react@18.3.1)
+      react: 19.1.0
+      use-sync-external-store: 1.5.0(react@19.1.0)
     dev: false

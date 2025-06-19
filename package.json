@@ -15,9 +15,9 @@
     "peerjs": "^1.5.1",
     "qrcode": "^1.5.3",
     "qrcode-reader": "^1.0.4",
-    "react": "^18",
+    "react": "^19.1.0",
     "react-color": "^2.19.3",
-    "react-dom": "^18",
+    "react-dom": "^19.1.0",
     "three": "^0.177.0"
   },
   "devDependencies": {
