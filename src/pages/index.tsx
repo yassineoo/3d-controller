@@ -97,8 +97,8 @@ export default function IndexPage() {
   return (
     <div className="h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-blue-600 text-white p-4">
-        <h1 className="font-extrabold text-xl text-center">AR Object Controller</h1>
+      <header className="bg-gradient-to-r from-blue-700 to-purple-600 text-white py-4 px-6 shadow">
+        <h1 className="text-2xl font-bold text-center tracking-wide">🧊 3D Object Controller</h1>
       </header>
 
       {/* Connection Status */}

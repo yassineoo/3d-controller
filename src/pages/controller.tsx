@@ -114,22 +114,16 @@ export default function ConnectPage() {
   }, [connection]);
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col bg-gray-50">
       {/* Header */}
-      <header className="bg-blue-600 text-white p-3">
-        <h1 className="font-bold text-lg text-center">3D Object Controller</h1>
+      <header className="bg-gradient-to-r from-blue-700 to-purple-600 text-white py-4 px-6 shadow">
+        <h1 className="text-2xl font-bold text-center tracking-wide">🧊 3D Object Controller</h1>
       </header>
 
-      {/* Connection Status */}
-      {connection ? (
-        <div className="bg-green-100 p-3 text-center">
-          <p className="text-green-800 font-semibold">✓ Connected Successfully</p>
-        </div>
-      ) : (
-        <div className="bg-yellow-100 p-3 text-center">
-          <p className="text-yellow-800 mb-3">Not Connected</p>
+      {!connection && (
+        <div className="text-center mb-4">
           <button
-            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
             onClick={() => connectToPeer()}
           >
             Connect to Display
@@ -139,22 +133,22 @@ export default function ConnectPage() {
 
       {/* Object Controls */}
       {connection && (
-        <div className="bg-gray-100 p-4">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-bold text-gray-800">Current Object:</h3>
-            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">{currentObject.name}</span>
+        <div className="bg-white border rounded-xl shadow-md mx-6  p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-gray-800">Current Object:</h3>
+            <span className="bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-sm font-semibold">{currentObject.name}</span>
           </div>
 
-          <div className="flex gap-3 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4">
             <button
               onClick={() => switchObject("prev")}
-              className="flex-1 bg-purple-500 hover:bg-purple-600 text-white py-3 px-4 rounded-lg font-semibold transition-colors"
+              className="flex-1 bg-purple-600 hover:bg-purple-700 h-10 text-white font-medium py-2 rounded-lg transition-all duration-300"
             >
               ← Previous Object
             </button>
             <button
               onClick={() => switchObject("next")}
-              className="flex-1 bg-purple-500 hover:bg-purple-600 text-white py-3 px-4 rounded-lg font-semibold transition-colors"
+              className="flex-1 bg-purple-600 hover:bg-purple-700 h-10 text-white font-medium py-2 rounded-lg transition-all duration-300"
             >
               Next Object →
             </button>
@@ -163,18 +157,20 @@ export default function ConnectPage() {
       )}
 
       {/* 3D Canvas */}
-      <Canvas className="flex-1 h-full" shadows dpr={[1, 2]} camera={{ position: [0, 0, 5], fov: 50 }}>
-        <OrbitControls enableRotate={true} />
-        <Suspense fallback={null}>
-          <Model
-            rotation={[3, 2, 0]}
-            connection={connection}
-            objectName={currentObject.query}
-            setSelectedMaterial={setSelectedMaterial}
-            selectedMaterial={selectedMaterial}
-          />
-        </Suspense>
-      </Canvas>
+      <div className="flex-1 mt-4">
+        <Canvas className="w-full h-full" shadows dpr={[1, 2]} camera={{ position: [0, 0, 5], fov: 50 }}>
+          <OrbitControls enableRotate={true} />
+          <Suspense fallback={null}>
+            <Model
+              rotation={[3, 2, 0]}
+              connection={connection}
+              objectName={currentObject.query}
+              setSelectedMaterial={setSelectedMaterial}
+              selectedMaterial={selectedMaterial}
+            />
+          </Suspense>
+        </Canvas>
+      </div>
     </div>
   );
 }
