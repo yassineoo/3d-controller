@@ -120,41 +120,42 @@ export default function ConnectPage() {
         <h1 className="text-2xl font-bold text-center tracking-wide">🧊 3D Object Controller</h1>
       </header>
 
-      {!connection && (
-        <div className="text-center mb-4">
-          <button
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
-            onClick={() => connectToPeer()}
-          >
-            Connect to Display
-          </button>
-        </div>
-      )}
-
-      {/* Object Controls */}
-      {connection && (
-        <div className="bg-white border rounded-xl shadow-md mx-6  p-5">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-800">Current Object:</h3>
-            <span className="bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-sm font-semibold">{currentObject.name}</span>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4">
+      {/* Connection & Object Controls */}
+      <div className="w-full px-4 sm:px-6 mt-4">
+        {!connection ? (
+          <div className="flex flex-wrap justify-center sm:justify-between items-center gap-2 bg-yellow-100 border border-yellow-300 rounded-lg px-4 py-2 shadow-sm">
+            <p className="text-yellow-800 text-sm font-medium">⚠️ Not Connected</p>
             <button
-              onClick={() => switchObject("prev")}
-              className="flex-1 bg-purple-600 hover:bg-purple-700 h-10 text-white font-medium py-2 rounded-lg transition-all duration-300"
+              className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold h-9 px-4 rounded-md transition-all"
+              onClick={() => connectToPeer()}
             >
-              ← Previous Object
-            </button>
-            <button
-              onClick={() => switchObject("next")}
-              className="flex-1 bg-purple-600 hover:bg-purple-700 h-10 text-white font-medium py-2 rounded-lg transition-all duration-300"
-            >
-              Next Object →
+              Connect to Display
             </button>
           </div>
-        </div>
-      )}
+        ) : (
+          <div className="flex flex-wrap items-center justify-between gap-2 bg-white border rounded-lg px-4 py-2 shadow-sm">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold text-gray-700">🧩 Object:</span>
+              <span className="bg-blue-100 text-blue-700 px-3 py-0.5 rounded-full text-xs font-medium">{currentObject.name}</span>
+            </div>
+
+            <div className="flex gap-2 w-full sm:w-auto">
+              <button
+                onClick={() => switchObject("prev")}
+                className="flex-1 sm:flex-none bg-purple-600 hover:bg-purple-700 text-white h-9 px-3 text-sm font-medium rounded-md transition"
+              >
+                ← Prev
+              </button>
+              <button
+                onClick={() => switchObject("next")}
+                className="flex-1 sm:flex-none bg-purple-600 hover:bg-purple-700 text-white h-9 px-3 text-sm font-medium rounded-md transition"
+              >
+                Next →
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* 3D Canvas */}
       <div className="flex-1 mt-4">
