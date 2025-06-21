@@ -3,14 +3,14 @@ import { Environment, OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { Suspense, useState, useRef, useEffect } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import * as THREE from "three";
 import { useRouter } from "next/router";
 import ColorPicker from "@/components/colorPicker";
 
 const AVAILABLE_OBJECTS = [
-  { name: "Desktop PC", query: "desktop_pc" },
-  { name: "Planet", query: "planet" },
-  { name: "Swim Villa", query: "swimvilla" },
+  { name: "beko 01", query: "./beko-01/RDNG561M20TSX.obj" },
+  { name: "beko 02", query: "./beko-02/RDNG561M20SX white.obj" },
 ];
 
 export default function ConnectPage() {
@@ -179,7 +179,7 @@ export default function ConnectPage() {
   );
 }
 const Model = ({ rotation, connection, objectName, setSelectedMaterial, selectedMaterial, setShowColorPicker, setColor, color }: any) => {
-  const gltf = useLoader(GLTFLoader, `./${objectName}/scene.gltf`);
+  const gltf = useLoader(OBJLoader, `${objectName}`);
   const { camera, scene } = useThree(); // Assuming you have access to useThree
 
   // Track the previous rotation and position to detect changes
@@ -298,5 +298,5 @@ const Model = ({ rotation, connection, objectName, setSelectedMaterial, selected
     traverseMaterials(scene);
   }, [scene]); // Ensure materials are traversed when the scene changes
 
-  return <primitive object={gltf.scene} />;
+  return <primitive object={gltf} />;
 };

@@ -1,20 +1,16 @@
 "use client";
-import { Environment, OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { Suspense, useState, useRef, useEffect } from "react";
+import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
 import QRCode from "qrcode";
-import { useRouter } from "next/router";
-import Image from "next/image";
 
 //import Peer from "peerjs";
 
 const AVAILABLE_OBJECTS = [
-  { name: "Desktop PC", query: "desktop_pc" },
-  { name: "Planet", query: "planet" },
-  { name: "Swim Villa", query: "swimvilla" },
+  { name: "beko 01", query: "./beko-01/RDNG561M20TSX.obj" },
+  { name: "beko 02", query: "./beko-02/RDNG561M20SX white.obj" },
 ];
 
 export default function IndexPage() {
@@ -146,7 +142,7 @@ type ModelProps = {
 };
 
 const Model = ({ rotation, position, objectName, colorEdit }: ModelProps) => {
-  const gltf = useLoader(GLTFLoader, `./${objectName}/scene.gltf`);
+  const gltf = useLoader(OBJLoader, `./${objectName}`);
   //const { camera, scene } = useThree();
   //const [selectedMaterial, setSelectedMaterial] = useState(null);
 
@@ -196,5 +192,5 @@ const Model = ({ rotation, position, objectName, colorEdit }: ModelProps) => {
     //  prevColor.current =
   });
 
-  return <primitive object={gltf.scene} />;
+  return <primitive object={gltf} />;
 };
