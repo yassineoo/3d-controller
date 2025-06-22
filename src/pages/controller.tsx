@@ -7,11 +7,7 @@ import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import * as THREE from "three";
 import { useRouter } from "next/router";
 import ColorPicker from "@/components/colorPicker";
-
-const AVAILABLE_OBJECTS = [
-  { name: "beko 01", query: "./beko-01/RDNG561M20TSX.obj" },
-  { name: "beko 02", query: "./beko-02/RDNG561M20SX white.obj" },
-];
+import { AVAILABLE_OBJECTS } from "./data";
 
 export default function ConnectPage() {
   const [peer, setPeer] = useState<any>();
@@ -162,6 +158,14 @@ export default function ConnectPage() {
         <Canvas className="w-full h-full" shadows dpr={[1, 2]} camera={{ position: [0, 0, 5], fov: 50 }}>
           <OrbitControls enableRotate={true} />
           <Suspense fallback={null}>
+            {/* Bright ambient light to illuminate all sides equally */}
+            <ambientLight intensity={1.5} />
+
+            {/* Multiple directional lights from different angles */}
+            <directionalLight position={[5, 5, 5]} intensity={0.8} />
+            <directionalLight position={[-5, 5, -5]} intensity={0.8} />
+            <directionalLight position={[5, -5, -5]} intensity={0.8} />
+            <directionalLight position={[-5, -5, 5]} intensity={0.8} />
             <Model
               rotation={[3, 2, 0]}
               connection={connection}
@@ -176,7 +180,7 @@ export default function ConnectPage() {
   );
 }
 const Model = ({ rotation, connection, objectName, setSelectedMaterial, selectedMaterial, setShowColorPicker, setColor, color }: any) => {
-  const gltf = useLoader(OBJLoader, `${objectName}`);
+  const gltf = useLoader(GLTFLoader, `${objectName}`);
   const { camera, scene } = useThree(); // Assuming you have access to useThree
 
   // Track the previous rotation and position to detect changes
@@ -295,5 +299,5 @@ const Model = ({ rotation, connection, objectName, setSelectedMaterial, selected
     traverseMaterials(scene);
   }, [scene]); // Ensure materials are traversed when the scene changes
 
-  return <primitive object={gltf} />;
+  return <primitive object={gltf.scene} />;
 };

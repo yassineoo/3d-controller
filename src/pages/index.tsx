@@ -1,17 +1,12 @@
 "use client";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { Suspense, useState, useRef, useEffect } from "react";
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
-
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
 import QRCode from "qrcode";
+import { AVAILABLE_OBJECTS } from "./data";
 
 //import Peer from "peerjs";
-
-const AVAILABLE_OBJECTS = [
-  { name: "beko 01", query: "./beko-01/RDNG561M20TSX.obj" },
-  { name: "beko 02", query: "./beko-02/RDNG561M20SX white.obj" },
-];
 
 export default function IndexPage() {
   const [currentObjectIndex, setCurrentObjectIndex] = useState(0); // Start with planet (index 1)
@@ -125,6 +120,14 @@ export default function IndexPage() {
 
           <Canvas className="w-full h-full" shadows dpr={[1, 2]} camera={{ position: [0, 0, 5], fov: 50 }}>
             <Suspense fallback={null}>
+              {/* Ambient light for overall illumination */}
+              <ambientLight intensity={0.5} />
+
+              {/* Directional light for main lighting */}
+              <directionalLight position={[10, 10, 5]} intensity={1} castShadow shadow-mapSize-width={1024} shadow-mapSize-height={1024} />
+
+              {/* Additional fill light */}
+              <pointLight position={[-10, -10, -5]} intensity={0.5} />
               <Model rotation={rotationDeg} position={rotationPos} objectName={currentObject.query} colorEdit={colorEdit} />
             </Suspense>
           </Canvas>
@@ -142,7 +145,7 @@ type ModelProps = {
 };
 
 const Model = ({ rotation, position, objectName, colorEdit }: ModelProps) => {
-  const gltf = useLoader(OBJLoader, `./${objectName}`);
+  const gltf = useLoader(GLTFLoader, `./${objectName}`);
   //const { camera, scene } = useThree();
   //const [selectedMaterial, setSelectedMaterial] = useState(null);
 
@@ -192,5 +195,5 @@ const Model = ({ rotation, position, objectName, colorEdit }: ModelProps) => {
     //  prevColor.current =
   });
 
-  return <primitive object={gltf} />;
+  return <primitive object={gltf.scene} />;
 };
