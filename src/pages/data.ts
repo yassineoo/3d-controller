@@ -4,3 +4,5 @@ export const AVAILABLE_OBJECTS = [
   { name: "Beko03", query: "./MAX-RFNH640AIG.glb" },
   { name: "Beko04", query: "./MAX-WMFL1214DSNC-IV.glb" },
 ];
+
+export default AVAILABLE_OBJECTS;
