@@ -150,7 +150,7 @@ type ModelProps = {
 };
 
 const Model = ({ rotation, position, objectName, colorEdit }: ModelProps) => {
-  const gltf = useLoader(GLTFLoader, `./${objectName}`);
+  const gltf = useLoader(GLTFLoader, `${objectName}`);
   //const { camera, scene } = useThree();
   //const [selectedMaterial, setSelectedMaterial] = useState(null);
 
