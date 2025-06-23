@@ -4,7 +4,12 @@ import { Suspense, useState, useRef, useEffect } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
 import QRCode from "qrcode";
-import { AVAILABLE_OBJECTS } from "./data";
+const AVAILABLE_OBJECTS = [
+  { name: "Beko01", query: "./MAX-LVM1637FDIV-DI.glb" },
+  { name: "Beko02", query: "./MAX-RDNH750AID.glb" },
+  { name: "Beko03", query: "./MAX-RFNH640AIG.glb" },
+  { name: "Beko04", query: "./MAX-WMFL1214DSNC-IV.glb" },
+];
 
 //import Peer from "peerjs";
 
