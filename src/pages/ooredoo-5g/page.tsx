@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
+import OoredooHeader from "./header";
 
 const OoredooSpaceHero = () => {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -610,136 +611,139 @@ const OoredooSpaceHero = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-black">
-      {/* 3D Space Background */}
-      <div ref={mountRef} className="absolute inset-0 z-0" />
+    <>
+      <OoredooHeader />
+      <div className="relative w-full  overflow-hidden bg-black">
+        {/* 3D Space Background */}
+        <div ref={mountRef} className="absolute inset-0 z-0" />
 
-      {/* Floating Stars Background */}
-      <div className="absolute inset-0 z-5">
-        {[...Array(50)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${2 + Math.random() * 3}s`,
-            }}
-          />
-        ))}
-      </div>
+        {/* Floating Stars Background */}
+        <div className="absolute inset-0 z-5">
+          {[...Array(50)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 3}s`,
+                animationDuration: `${2 + Math.random() * 3}s`,
+              }}
+            />
+          ))}
+        </div>
 
-      {/* Content Overlay */}
-      <div className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center px-4">
-        <div className={`transition-all duration-3000 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}>
-          {/* 5G dans un cercle rouge */}
-          <div className="mb-12 relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-red-600/20 via-transparent to-red-600/20 rounded-full blur-3xl animate-pulse"></div>
+        {/* Content Overlay */}
+        <div className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center px-4">
+          <div className={`transition-all duration-3000 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}>
+            {/* 5G dans un cercle rouge */}
+            <div className="mb-12 relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-red-600/20 via-transparent to-red-600/20 rounded-full blur-3xl animate-pulse"></div>
 
-            {/* Cercle rouge avec 5G */}
-            <div className="relative mx-auto w-48 h-48 md:w-56 md:h-56 mb-8">
-              <div className="absolute inset-0 border-4 border-red-500 rounded-full animate-pulse"></div>
-              <div className="absolute inset-2 border-2 border-red-400/50 rounded-full animate-pulse" style={{ animationDelay: "0.5s" }}></div>
-              <div className="absolute inset-4 border border-red-300/30 rounded-full animate-pulse" style={{ animationDelay: "1s" }}></div>
+              {/* Cercle rouge avec 5G */}
+              <div className="relative mx-auto w-48 h-48 md:w-56 md:h-56 mb-8">
+                <div className="absolute inset-0 border-4 border-red-500 rounded-full animate-pulse"></div>
+                <div className="absolute inset-2 border-2 border-red-400/50 rounded-full animate-pulse" style={{ animationDelay: "0.5s" }}></div>
+                <div className="absolute inset-4 border border-red-300/30 rounded-full animate-pulse" style={{ animationDelay: "1s" }}></div>
 
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-red-500 via-white to-red-500 bg-clip-text text-transparent">
-                  5G
-                </span>
-              </div>
-
-              {/* Ondulations autour du cercle */}
-              <div className="absolute inset-0 rounded-full border-2 border-red-500/30 animate-ping"></div>
-              <div className="absolute inset-0 rounded-full border border-red-400/20 animate-ping" style={{ animationDelay: "1s" }}></div>
-            </div>
-
-            <div className="h-1 w-48 bg-gradient-to-r from-transparent via-red-500 to-transparent mx-auto animate-pulse"></div>
-          </div>
-
-          {/* Nouveau texte principal */}
-          <div className="mb-12 relative">
-            <div className="absolute -inset-10 bg-gradient-to-r from-red-500/10 via-white/5 to-red-500/10 rounded-full blur-2xl animate-pulse"></div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 relative text-center leading-tight">
-              <span className="text-white">Vivez la</span>
-              <span className="text-red-400"> Vitesse</span>
-              <span className="text-white"> du</span>
-              <span className="text-red-400"> Futur</span>
-            </h2>
-            <p className="text-xl md:text-2xl text-white/90 mb-4 font-light text-center">
-              La <span className="text-red-400 font-semibold">5G</span> est <span className="text-red-400 font-semibold">Désormais</span> Entre Vos{" "}
-              <span className="text-red-400 font-semibold">Mains</span>
-            </p>
-            <p className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto leading-relaxed text-center">
-              Découvrez une nouvelle dimension de connectivité où chaque milliseconde compte et où l'impossible devient possible.
-            </p>
-          </div>
-
-          {/* Appel à l'Action */}
-          <div className="mb-12 space-y-6">
-            <div className="space-y-4 md:space-y-0 md:space-x-6 md:flex md:justify-center">
-              <button className="group relative bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-red-500/25">
-                <span className="relative z-10">Découvrir la 5G</span>
-                <div className="absolute inset-0 bg-white/20 rounded-full blur-xl group-hover:blur-2xl transition-all duration-300"></div>
-              </button>
-              <button className="group relative border-2 border-white/50 text-white hover:border-red-500 hover:text-red-400 px-10 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 backdrop-blur-sm">
-                <span className="relative z-10">Vitesse Ultra-Rapide</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-red-500/0 via-red-500/10 to-red-500/0 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
-              </button>
-            </div>
-          </div>
-
-          {/* Métriques 5G */}
-          <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
-            {[
-              { value: "10x", label: "Plus Rapide", color: "text-red-400" },
-              { value: "1ms", label: "Latence", color: "text-white" },
-              { value: "∞", label: "Possibilités", color: "text-red-400" },
-            ].map((metric, index) => (
-              <div key={index} className="text-center group">
-                <div className="relative">
-                  <div className={`text-4xl md:text-5xl font-bold ${metric.color} mb-2 group-hover:scale-110 transition-transform duration-300`}>
-                    {metric.value}
-                  </div>
-                  <div className="text-sm md:text-base text-white/70 uppercase tracking-wider">{metric.label}</div>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/20 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-red-500 via-white to-red-500 bg-clip-text text-transparent">
+                    5G
+                  </span>
                 </div>
+
+                {/* Ondulations autour du cercle */}
+                <div className="absolute inset-0 rounded-full border-2 border-red-500/30 animate-ping"></div>
+                <div className="absolute inset-0 rounded-full border border-red-400/20 animate-ping" style={{ animationDelay: "1s" }}></div>
               </div>
-            ))}
-          </div>
-        </div>
-      </div>
 
-      {/* Loading Overlay */}
-      {!isLoaded && (
-        <div className="absolute inset-0 z-20 bg-black flex items-center justify-center">
-          <div className="text-center">
-            <div className="relative">
-              <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-red-500 mx-auto mb-6"></div>
-              <div className="absolute inset-0 animate-ping rounded-full h-20 w-20 border border-red-500/30 mx-auto"></div>
+              <div className="h-1 w-48 bg-gradient-to-r from-transparent via-red-500 to-transparent mx-auto animate-pulse"></div>
             </div>
-            <p className="text-white text-lg mb-2">Activation de la 5G...</p>
-            <p className="text-white/60">Connexion ultra-rapide en cours</p>
+
+            {/* Nouveau texte principal */}
+            <div className="mb-12 relative">
+              <div className="absolute -inset-10 bg-gradient-to-r from-red-500/10 via-white/5 to-red-500/10 rounded-full blur-2xl animate-pulse"></div>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 relative text-center leading-tight">
+                <span className="text-white">Vivez la</span>
+                <span className="text-red-400"> Vitesse</span>
+                <span className="text-white"> du</span>
+                <span className="text-red-400"> Futur</span>
+              </h2>
+              <p className="text-xl md:text-2xl text-white/90 mb-4 font-light text-center">
+                La <span className="text-red-400 font-semibold">5G</span> est <span className="text-red-400 font-semibold">Désormais</span> Entre Vos{" "}
+                <span className="text-red-400 font-semibold">Mains</span>
+              </p>
+              <p className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto leading-relaxed text-center">
+                Découvrez une nouvelle dimension de connectivité où chaque milliseconde compte et où l'impossible devient possible.
+              </p>
+            </div>
+
+            {/* Appel à l'Action */}
+            <div className="mb-12 space-y-6">
+              <div className="space-y-4 md:space-y-0 md:space-x-6 md:flex md:justify-center">
+                <button className="group relative bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-red-500/25">
+                  <span className="relative z-10">Découvrir la 5G</span>
+                  <div className="absolute inset-0 bg-white/20 rounded-full blur-xl group-hover:blur-2xl transition-all duration-300"></div>
+                </button>
+                <button className="group relative border-2 border-white/50 text-white hover:border-red-500 hover:text-red-400 px-10 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 backdrop-blur-sm">
+                  <span className="relative z-10">Vitesse Ultra-Rapide</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-500/0 via-red-500/10 to-red-500/0 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+                </button>
+              </div>
+            </div>
+
+            {/* Métriques 5G */}
+            <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
+              {[
+                { value: "10x", label: "Plus Rapide", color: "text-red-400" },
+                { value: "1ms", label: "Latence", color: "text-white" },
+                { value: "∞", label: "Possibilités", color: "text-red-400" },
+              ].map((metric, index) => (
+                <div key={index} className="text-center group">
+                  <div className="relative">
+                    <div className={`text-4xl md:text-5xl font-bold ${metric.color} mb-2 group-hover:scale-110 transition-transform duration-300`}>
+                      {metric.value}
+                    </div>
+                    <div className="text-sm md:text-base text-white/70 uppercase tracking-wider">{metric.label}</div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/20 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      )}
 
-      {/* Custom CSS for animations */}
-      <style jsx>{`
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0px);
+        {/* Loading Overlay */}
+        {!isLoaded && (
+          <div className="absolute inset-0 z-20 bg-black flex items-center justify-center">
+            <div className="text-center">
+              <div className="relative">
+                <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-red-500 mx-auto mb-6"></div>
+                <div className="absolute inset-0 animate-ping rounded-full h-20 w-20 border border-red-500/30 mx-auto"></div>
+              </div>
+              <p className="text-white text-lg mb-2">Activation de la 5G...</p>
+              <p className="text-white/60">Connexion ultra-rapide en cours</p>
+            </div>
+          </div>
+        )}
+
+        {/* Custom CSS for animations */}
+        <style jsx>{`
+          @keyframes float {
+            0%,
+            100% {
+              transform: translateY(0px);
+            }
+            50% {
+              transform: translateY(-10px);
+            }
           }
-          50% {
-            transform: translateY(-10px);
+          .animate-float {
+            animation: float 3s ease-in-out infinite;
           }
-        }
-        .animate-float {
-          animation: float 3s ease-in-out infinite;
-        }
-      `}</style>
-    </div>
+        `}</style>
+      </div>
+    </>
   );
 };
 
